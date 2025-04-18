@@ -34,62 +34,45 @@ class LoginPage extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 32),
-                  TextFormField(
+                  CustomTextField(
+                    label: 'Email',
                     controller: _emailController,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      prefixIcon: const Icon(Icons.email),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
+                    prefixIcon: const Icon(Icons.email),
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your email';
+                        return 'Enter your Email';
+                      } else {
+                        return null;
                       }
-                      if (!GetUtils.isEmail(value)) {
-                        return 'Please enter a valid email';
-                      }
-                      return null;
                     },
                   ),
                   const SizedBox(height: 16),
-                  CustomTextField(
-                    label: 'Password',
-                    controller: _passwordController,
-                    prefixIcon: IconButton(
-                      onPressed: () {
-                        _authController.togglePasswordVisibility();
-                      },
-                      icon: Icon(
-                        _authController.isPasswordvisible.value
-                            ? Icons.lock
-                            : Icons.lock_open,
+                  Obx(
+                    () => CustomTextField(
+                      label: 'Password',
+                      // hint: 'Password',
+                      controller: _passwordController,
+                      prefixIcon: IconButton(
+                        onPressed: () {
+                          _authController.togglePasswordVisibility();
+                        },
+                        icon: Icon(
+                          _authController.isPasswordvisible.value
+                              ? Icons.lock
+                              : Icons.lock_open,
+                        ),
                       ),
+                      obscureText: _authController.isPasswordvisible.value,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter you password';
+                        } else {
+                          return null;
+                        }
+                      },
                     ),
-                    obscureText: _authController.isPasswordvisible.value,
                   ),
-                  // TextFormField(
-                  //   controller: _passwordController,
-                  //   decoration: InputDecoration(
-                  //     labelText: 'Password',
-                  //     prefixIcon: const Icon(Icons.lock),
-                  //     border: OutlineInputBorder(
-                  //       borderRadius: BorderRadius.circular(8),
-                  //     ),
-                  //   ),
-                  //   obscureText: true,
-                  //   validator: (value) {
-                  //     if (value == null || value.isEmpty) {
-                  //       return 'Please enter your password';
-                  //     }
-                  //     if (value.length < 6) {
-                  //       return 'Password must be at least 6 characters';
-                  //     }
-                  //     return null;
-                  //   },
-                  // ),
                   const SizedBox(height: 24),
                   CustomButton(
                     text: 'Login',
@@ -102,61 +85,6 @@ class LoginPage extends StatelessWidget {
                       }
                     },
                   ),
-                  // Obx(
-                  //   () => ElevatedButton(
-                  //     onPressed:
-                  //         _authController.isLoading.value
-                  //             ? null
-                  //             : () {
-                  //               if (_formKey.currentState!.validate()) {
-                  //                 _authController.signIn(
-                  //                   _emailController.text.trim(),
-                  //                   _passwordController.text,
-                  //                 );
-                  //               }
-                  //             },
-                  //     style: ElevatedButton.styleFrom(
-                  //       padding: const EdgeInsets.symmetric(vertical: 16),
-                  //       shape: RoundedRectangleBorder(
-                  //         borderRadius: BorderRadius.circular(8),
-                  //       ),
-                  //     ),
-                  //     child:
-                  //         _authController.isLoading.value
-                  //             ? const SizedBox(
-                  //               height: 20,
-                  //               width: 20,
-                  //               child: CircularProgressIndicator(
-                  //                 strokeWidth: 2,
-                  //                 valueColor: AlwaysStoppedAnimation(
-                  //                   Colors.white,
-                  //                 ),
-                  //               ),
-                  //             )
-                  //             : const Text(
-                  //               'Login',
-                  //               style: TextStyle(
-                  //                 fontSize: 16,
-                  //                 fontWeight: FontWeight.bold,
-                  //                 color: AppColors.white,
-                  //               ),
-                  //             ),
-                  //   ),
-                  // ),
-                  // const SizedBox(height: 16),
-                  // Obx(
-                  //   () =>
-                  //       _authController.errorMessage.isNotEmpty
-                  //           ? Text(
-                  //             _authController.errorMessage.value,
-                  //             style: const TextStyle(
-                  //               color: Colors.red,
-                  //               fontSize: 14,
-                  //             ),
-                  //             textAlign: TextAlign.center,
-                  //           )
-                  //           : const SizedBox.shrink(),
-                  // ),
                 ],
               ),
             ),

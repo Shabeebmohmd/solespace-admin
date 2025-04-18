@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sole_space_admin/app/constants/constants.dart';
 import 'package:sole_space_admin/app/controllers/auth_controller.dart';
-import 'package:sole_space_admin/app/routes/app_routes.dart';
+import 'package:sole_space_admin/app/core/widgets/custom_app_bar.dart';
+import 'package:sole_space_admin/app/core/widgets/custom_card.dart';
+import 'package:sole_space_admin/app/theme/app_color.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -11,8 +14,9 @@ class HomePage extends StatelessWidget {
     final authController = Get.find<AuthController>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sole Space Admin'),
+      appBar: CustomAppBar(
+        showBackButton: false,
+        title: Text('SoleSpace'),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -21,100 +25,48 @@ class HomePage extends StatelessWidget {
                   title: 'Log out',
                   middleText: 'Are you sure you want log out?',
                   textConfirm: 'confirm',
+                  buttonColor: AppColors.secondBackground,
                   onConfirm: () => authController.logOut(),
                   textCancel: 'Cancel',
                 ),
           ),
         ],
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.shopping_bag, size: 60, color: Colors.white),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Sole Space Admin',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ListView.separated(
+            shrinkWrap: true,
+            itemCount: 5,
+            separatorBuilder: (context, index) => SizedBox(height: 40),
+            padding: const EdgeInsets.all(16),
+            itemBuilder: (BuildContext context, int index) {
+              return CustomCard(
+                onTap: () => Get.toNamed(menuItems[index]['route'] as String),
+                gradient: cardGradients[index],
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(menuItems[index]['icon'] as IconData, size: 60),
+                        const SizedBox(width: 12),
+                        Text(
+                          menuItems[index]['title'] as String,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.white,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.dashboard),
-              title: const Text('Dashboard'),
-              onTap: () {
-                Get.back();
-                Get.toNamed(AppRoutes.dashboard);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.add_box),
-              title: const Text('Add Product'),
-              onTap: () {
-                Get.back();
-                Get.toNamed(AppRoutes.addProduct);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.inventory),
-              title: const Text('Manage Products'),
-              onTap: () {
-                Get.back();
-                Get.toNamed(AppRoutes.manageProducts);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.shopping_cart),
-              title: const Text('Manage Orders'),
-              onTap: () {
-                Get.back();
-                Get.toNamed(AppRoutes.manageOrders);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.people),
-              title: const Text('Manage Users'),
-              onTap: () {
-                Get.back();
-                Get.toNamed(AppRoutes.manageUsers);
-              },
-            ),
-          ],
-        ),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.shopping_bag,
-              size: 100,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            const SizedBox(height: 20),
-            Text(
-              'Welcome to Sole Space Admin',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'Select an option from the menu to get started',
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-          ],
-        ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sole_space_admin/app/theme/app_color.dart';
 
 enum CustomButtonVariant { primary, secondary, outline }
 
@@ -35,7 +36,7 @@ class CustomButton extends StatelessWidget {
         button = ElevatedButton(
           onPressed: isLoading ? null : onPressed,
           style: ElevatedButton.styleFrom(
-            backgroundColor: colorScheme.primary,
+            backgroundColor: AppColors.primary,
             foregroundColor: colorScheme.onPrimary,
             // disabledBackgroundColor: colorScheme.primary.withOpacity(0.5),
           ),
