@@ -5,8 +5,8 @@ final menuItems = [
   {'icon': Icons.dashboard, 'title': 'Dashboard', 'route': AppRoutes.dashboard},
   {
     'icon': Icons.add_box,
-    'title': 'Add Product',
-    'route': AppRoutes.addProduct,
+    'title': 'Manage Brands',
+    'route': AppRoutes.manageBrand,
   },
   {
     'icon': Icons.inventory,

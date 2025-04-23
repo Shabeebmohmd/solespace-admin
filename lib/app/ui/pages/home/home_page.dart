@@ -25,7 +25,7 @@ class HomePage extends StatelessWidget {
                   title: 'Log out',
                   middleText: 'Are you sure you want log out?',
                   textConfirm: 'confirm',
-                  buttonColor: AppColors.secondBackground,
+                  buttonColor: AppColors.primary,
                   onConfirm: () => authController.logOut(),
                   textCancel: 'Cancel',
                 ),

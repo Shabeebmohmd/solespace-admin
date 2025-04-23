@@ -10,6 +10,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color? foregroundColor;
   final double elevation;
   final bool centerTitle;
+  final double borderRadius;
 
   const CustomAppBar({
     super.key,
@@ -22,6 +23,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.foregroundColor,
     this.elevation = 0,
     this.centerTitle = true,
+    this.borderRadius = 16,
   });
 
   @override
@@ -35,11 +37,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: backgroundColor ?? colorScheme.surface,
       foregroundColor: foregroundColor ?? colorScheme.onSurface,
       elevation: elevation,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(borderRadius), // Adjust the radius as needed
+        ),
+      ),
       leading:
           leading ??
           (showBackButton
               ? IconButton(
-                icon: const Icon(Icons.arrow_back),
+                icon: const Icon(Icons.arrow_back_ios_new),
                 onPressed: onBackPressed ?? () => Navigator.pop(context),
               )
               : null),

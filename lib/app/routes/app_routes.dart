@@ -3,8 +3,13 @@ class AppRoutes {
   static const String login = '/login';
   static const String home = '/home';
   static const String dashboard = '/dashboard';
-  static const String addProduct = '/add-product';
+
+  // brand&product management
+  static const String addBrand = '/add-brands';
+  static const String manageBrand = '/manage-brands';
+  static const String addProducts = '/add-products';
   static const String manageProducts = '/manage-products';
+
   static const String manageOrders = '/manage-orders';
   static const String manageUsers = '/manage-users';
 }
