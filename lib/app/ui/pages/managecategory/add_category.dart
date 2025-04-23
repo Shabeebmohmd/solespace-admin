@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sole_space_admin/app/controllers/brand_controller.dart';
+import 'package:sole_space_admin/app/controllers/category_controller.dart';
 import 'package:sole_space_admin/app/core/widgets/custom_app_bar.dart';
 import 'package:sole_space_admin/app/core/widgets/custom_button.dart';
 import 'package:sole_space_admin/app/core/widgets/custom_text_field.dart';
 import 'package:sole_space_admin/app/routes/app_routes.dart';
 
-class AddBrandsPage extends StatelessWidget {
-  AddBrandsPage({super.key});
+class AddCategoryPage extends StatelessWidget {
+  AddCategoryPage({super.key});
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
-  final brandController = Get.find<BrandController>();
+  final _categoryController = Get.find<CategoryController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: Text('Add brand')),
+      appBar: CustomAppBar(title: Text('Add category')),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -24,11 +25,11 @@ class AddBrandsPage extends StatelessWidget {
             child: Column(
               children: [
                 CustomTextField(
-                  label: 'Brand name',
+                  label: 'Category name',
                   controller: _nameController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please Enter brand name';
+                      return 'Please Enter category name';
                     } else {
                       return null;
                     }
@@ -49,10 +50,10 @@ class AddBrandsPage extends StatelessWidget {
                 ),
                 SizedBox(height: 24),
                 CustomButton(
-                  text: 'Add brand',
+                  text: 'Add category',
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      brandController.addBrand(
+                      _categoryController.addCategory(
                         _nameController.text,
                         _descriptionController.text,
                         null,
@@ -60,7 +61,7 @@ class AddBrandsPage extends StatelessWidget {
                       Get.back();
                     }
                   },
-                  isLoading: brandController.isLoading.value,
+                  isLoading: _categoryController.isLoading.value,
                 ),
               ],
             ),

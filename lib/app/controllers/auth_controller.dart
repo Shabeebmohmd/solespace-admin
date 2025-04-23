@@ -17,7 +17,7 @@ class AuthController extends GetxController {
       if (user != null) {
         if (user.email == 'shabeebmohmd47@gmail.com') {
           Get.offAllNamed(AppRoutes.home);
-          Get.snackbar('Success', 'Welcome');
+          // Get.snackbar('Success', 'Welcome');
         } else {
           Get.snackbar('Access denied', 'You are not admin');
           logOut();
@@ -30,8 +30,13 @@ class AuthController extends GetxController {
 
   Future<void> logIn(String email, String password) async {
     final user = await _authService.logIn(email, password);
-    if (user == null) {
-      Get.snackbar('Error', 'Invalid credential');
+    if (user != null) {
+      if (user.email == 'shabeebmohmd47@gmail.com') {
+        Get.snackbar('Success', 'Welcome');
+        Get.offAllNamed(AppRoutes.home);
+      } else {
+        Get.snackbar('Error', 'Invalid credential');
+      }
     }
   }
 

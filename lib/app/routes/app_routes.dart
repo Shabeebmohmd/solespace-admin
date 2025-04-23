@@ -9,6 +9,8 @@ class AppRoutes {
   static const String manageBrand = '/manage-brands';
   static const String addProducts = '/add-products';
   static const String manageProducts = '/manage-products';
+  static const String addCategory = '/add-category';
+  static const String manageCategory = '/manage-category';
 
   static const String manageOrders = '/manage-orders';
   static const String manageUsers = '/manage-users';

@@ -14,6 +14,11 @@ final menuItems = [
     'route': AppRoutes.manageProducts,
   },
   {
+    'icon': Icons.category,
+    'title': 'Manage Category',
+    'route': AppRoutes.manageCategory,
+  },
+  {
     'icon': Icons.shopping_cart,
     'title': 'Manage Orders',
     'route': AppRoutes.manageOrders,
@@ -49,6 +54,11 @@ final List<Gradient> cardGradients = [
   ),
   const LinearGradient(
     colors: [Color(0xFFa18cd1), Color(0xFFfbc2eb)],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  ),
+  const LinearGradient(
+    colors: [Color(0xFF36D1DC), Color(0xFF5B86E5)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   ),

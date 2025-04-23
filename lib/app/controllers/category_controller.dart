@@ -47,6 +47,28 @@ class CategoryController extends GetxController {
     }
   }
 
+  Future<void> editCategory(
+    String id,
+    String name,
+    String? description,
+    String? imageurl,
+  ) async {
+    try {
+      // isLoading.value = true;
+      final category = Category(
+        id: id,
+        name: name,
+        description: description,
+        imageUrl: imageurl,
+        createdAt: DateTime.now(),
+      );
+      await _categoryService.updateCategory(category);
+      Get.snackbar('Success', 'Updated successfully');
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to update category');
+    }
+  }
+
   Future<void> deleteCategory(String categoryId) async {
     try {
       isLoading.value = true;
