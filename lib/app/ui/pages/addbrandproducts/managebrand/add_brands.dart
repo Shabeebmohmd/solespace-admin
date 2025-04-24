@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sole_space_admin/app/controllers/brand_controller.dart';
 import 'package:sole_space_admin/app/core/widgets/custom_app_bar.dart';
 import 'package:sole_space_admin/app/core/widgets/custom_button.dart';
 import 'package:sole_space_admin/app/core/widgets/custom_text_field.dart';
 import 'package:sole_space_admin/app/routes/app_routes.dart';
+import 'dart:io';
 
 class AddBrandsPage extends StatelessWidget {
   AddBrandsPage({super.key});
@@ -12,6 +14,7 @@ class AddBrandsPage extends StatelessWidget {
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
   final brandController = Get.find<BrandController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,6 +26,23 @@ class AddBrandsPage extends StatelessWidget {
             key: _formKey,
             child: Column(
               children: [
+                Obx(() {
+                  return GestureDetector(
+                    onTap: brandController.pickImage,
+                    child: CircleAvatar(
+                      radius: 80,
+                      backgroundImage:
+                          brandController.selectedImage.value != null
+                              ? FileImage(brandController.selectedImage.value!)
+                              : null,
+                      child:
+                          brandController.selectedImage.value == null
+                              ? Icon(Icons.add_a_photo, size: 30)
+                              : null,
+                    ),
+                  );
+                }),
+                SizedBox(height: 16),
                 CustomTextField(
                   label: 'Brand name',
                   controller: _nameController,
@@ -55,8 +75,9 @@ class AddBrandsPage extends StatelessWidget {
                       brandController.addBrand(
                         _nameController.text,
                         _descriptionController.text,
-                        null,
+                        brandController.selectedImage.value,
                       );
+                      brandController.selectedImage.value = null;
                       Get.back();
                     }
                   },

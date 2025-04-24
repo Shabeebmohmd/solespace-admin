@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sole_space_admin/app/data/models/brand_model.dart';
 import 'package:sole_space_admin/app/data/services/brand_service.dart';
 
@@ -6,6 +9,7 @@ class BrandController extends GetxController {
   final BrandService _brandService = BrandService();
   final RxList<Brand> brands = <Brand>[].obs;
   final RxBool isLoading = false.obs;
+  final Rx<File?> selectedImage = Rx<File?>(null);
 
   @override
   void onInit() {
@@ -24,18 +28,14 @@ class BrandController extends GetxController {
     );
   }
 
-  Future<void> addBrand(
-    String name,
-    String? description,
-    String? logoUrl,
-  ) async {
+  Future<void> addBrand(String name, String? description, File? logo) async {
     try {
       isLoading.value = true;
       final brand = Brand(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         name: name,
         description: description,
-        logoUrl: logoUrl,
+        logoImage: logo,
         createdAt: DateTime.now(),
       );
       await _brandService.addBrand(brand);
@@ -51,7 +51,7 @@ class BrandController extends GetxController {
     String id,
     String name,
     String? description,
-    String? logourl,
+    File? logo,
   ) async {
     try {
       // isLoading.value = true;
@@ -59,13 +59,21 @@ class BrandController extends GetxController {
         id: id,
         name: name,
         description: description,
-        logoUrl: logourl,
+        logoImage: logo,
         createdAt: DateTime.now(),
       );
       await _brandService.updateBrand(brand);
       Get.snackbar('Success', 'Updated successfully');
     } catch (e) {
       Get.snackbar('Error', 'Failed to update brand');
+    }
+  }
+
+  Future<void> pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      selectedImage.value = File(pickedFile.path);
     }
   }
 

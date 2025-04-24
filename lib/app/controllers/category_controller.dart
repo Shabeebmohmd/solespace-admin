@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
 import 'package:sole_space_admin/app/data/models/catogory_model.dart';
 import 'package:sole_space_admin/app/data/services/category_service.dart';
@@ -27,7 +29,7 @@ class CategoryController extends GetxController {
   Future<void> addCategory(
     String name,
     String? description,
-    String? imageUrl,
+    File? image,
   ) async {
     try {
       isLoading.value = true;
@@ -35,7 +37,7 @@ class CategoryController extends GetxController {
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         name: name,
         description: description,
-        imageUrl: imageUrl,
+        imageUrl: image,
         createdAt: DateTime.now(),
       );
       await _categoryService.addCategory(category);
@@ -51,7 +53,7 @@ class CategoryController extends GetxController {
     String id,
     String name,
     String? description,
-    String? imageurl,
+    File? image,
   ) async {
     try {
       // isLoading.value = true;
@@ -59,7 +61,7 @@ class CategoryController extends GetxController {
         id: id,
         name: name,
         description: description,
-        imageUrl: imageurl,
+        imageUrl: image,
         createdAt: DateTime.now(),
       );
       await _categoryService.updateCategory(category);
