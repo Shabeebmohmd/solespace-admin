@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:sole_space_admin/app/controllers/brand_controller.dart';
 import 'package:sole_space_admin/app/core/widgets/custom_app_bar.dart';
 import 'package:sole_space_admin/app/core/widgets/custom_button.dart';
 import 'package:sole_space_admin/app/core/widgets/custom_text_field.dart';
-import 'package:sole_space_admin/app/routes/app_routes.dart';
-import 'dart:io';
+import 'package:sole_space_admin/utils/utils.dart';
 
 class AddBrandsPage extends StatelessWidget {
   AddBrandsPage({super.key});
@@ -46,26 +44,14 @@ class AddBrandsPage extends StatelessWidget {
                 CustomTextField(
                   label: 'Brand name',
                   controller: _nameController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please Enter brand name';
-                    } else {
-                      return null;
-                    }
-                  },
+                  validator: (value) => validateBrand(value),
                 ),
                 SizedBox(height: 16),
                 CustomTextField(
                   label: 'Description',
                   controller: _descriptionController,
                   maxLines: 3,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please Enter description';
-                    } else {
-                      return null;
-                    }
-                  },
+                  validator: (value) => validateBrandDescription(value),
                 ),
                 SizedBox(height: 24),
                 CustomButton(

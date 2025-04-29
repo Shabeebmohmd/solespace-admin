@@ -32,89 +32,99 @@ class ManageCategoryPage extends StatelessWidget {
                         title: Text(category.name),
                         subtitle: Text(category.description ?? ''),
                         trailing: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            IconButton(
-                              onPressed: () {
-                                final nameController = TextEditingController(
-                                  text: category.name,
-                                );
-                                final descriptionController =
-                                    TextEditingController(
-                                      text: category.description,
-                                    );
-                                Get.defaultDialog(
-                                  title: 'Edit: ${category.name}',
-                                  titleStyle: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  textConfirm: 'Save',
-                                  textCancel: 'Cancel',
-                                  content: Form(
-                                    key: _formKey,
-                                    child: Column(
-                                      children: [
-                                        CustomTextField(
-                                          label: 'Category name',
-                                          controller: nameController,
-                                          validator: (value) {
-                                            if (value == null ||
-                                                value.isEmpty) {
-                                              return 'Enter category name';
-                                            } else {
-                                              return null;
-                                            }
-                                          },
-                                        ),
-                                        SizedBox(height: 16),
-                                        CustomTextField(
-                                          label: 'Description',
-                                          controller: descriptionController,
-                                          maxLines: 3,
-                                          validator: (value) {
-                                            if (value == null ||
-                                                value.isEmpty) {
-                                              return 'Enter description';
-                                            } else {
-                                              return null;
-                                            }
-                                          },
-                                        ),
-                                      ],
+                            Material(
+                              elevation: 5,
+                              borderRadius: BorderRadius.circular(8),
+                              child: IconButton(
+                                onPressed: () {
+                                  final nameController = TextEditingController(
+                                    text: category.name,
+                                  );
+                                  final descriptionController =
+                                      TextEditingController(
+                                        text: category.description,
+                                      );
+                                  Get.defaultDialog(
+                                    title: 'Edit: ${category.name}',
+                                    titleStyle: TextStyle(
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                  ),
-                                  onConfirm: () {
-                                    if (_formKey.currentState!.validate()) {
-                                      _categoryController.editCategory(
+                                    textConfirm: 'Save',
+                                    textCancel: 'Cancel',
+                                    content: Form(
+                                      key: _formKey,
+                                      child: Column(
+                                        children: [
+                                          CustomTextField(
+                                            label: 'Category name',
+                                            controller: nameController,
+                                            validator: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return 'Enter category name';
+                                              } else {
+                                                return null;
+                                              }
+                                            },
+                                          ),
+                                          SizedBox(height: 16),
+                                          CustomTextField(
+                                            label: 'Description',
+                                            controller: descriptionController,
+                                            maxLines: 3,
+                                            validator: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return 'Enter description';
+                                              } else {
+                                                return null;
+                                              }
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    onConfirm: () {
+                                      if (_formKey.currentState!.validate()) {
+                                        _categoryController.editCategory(
+                                          category.id,
+                                          nameController.text,
+                                          descriptionController.text,
+                                          null,
+                                        );
+                                        Get.back();
+                                      }
+                                    },
+                                  );
+                                },
+                                icon: Icon(Icons.edit),
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            Material(
+                              elevation: 5,
+                              borderRadius: BorderRadius.circular(8),
+                              child: IconButton(
+                                onPressed: () {
+                                  Get.defaultDialog(
+                                    title: 'Delete category',
+                                    middleText:
+                                        'Are you sure you want to delete this category?',
+                                    textConfirm: 'Delete',
+                                    textCancel: 'cancel',
+                                    onConfirm: () {
+                                      _categoryController.deleteCategory(
                                         category.id,
-                                        nameController.text,
-                                        descriptionController.text,
-                                        null,
                                       );
                                       Get.back();
-                                    }
-                                  },
-                                );
-                              },
-                              icon: Icon(Icons.edit),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                Get.defaultDialog(
-                                  title: 'Delete category',
-                                  middleText:
-                                      'Are you sure you want to delete this category?',
-                                  textConfirm: 'Delete',
-                                  textCancel: 'cancel',
-                                  onConfirm: () {
-                                    _categoryController.deleteCategory(
-                                      category.id,
-                                    );
-                                    Get.back();
-                                  },
-                                );
-                              },
-                              icon: Icon(Icons.delete),
+                                    },
+                                  );
+                                },
+                                icon: Icon(Icons.delete),
+                              ),
                             ),
                           ],
                         ),

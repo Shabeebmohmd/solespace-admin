@@ -45,6 +45,8 @@ dependencies:
   image_picker: ^1.0.7
   firebase_storage:
   firebase_app_check:
+  http: 
+  cloudinary_public:
   
 
 dev_dependencies:

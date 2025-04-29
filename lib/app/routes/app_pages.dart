@@ -1,13 +1,13 @@
 import 'package:get/get.dart';
 import 'package:sole_space_admin/app/routes/app_routes.dart';
-import 'package:sole_space_admin/app/ui/pages/addbrandproducts/managebrand/add_brands.dart';
-import 'package:sole_space_admin/app/ui/pages/addbrandproducts/managebrand/manage_brand.dart';
-import 'package:sole_space_admin/app/ui/pages/addbrandproducts/manageproduct/add_products.dart';
+import 'package:sole_space_admin/app/ui/pages/managebrand/add_brands.dart';
+import 'package:sole_space_admin/app/ui/pages/managebrand/manage_brand.dart';
+import 'package:sole_space_admin/app/ui/pages/manageproduct/add_products.dart';
 import 'package:sole_space_admin/app/ui/pages/dashboard/dash_board.dart';
 import 'package:sole_space_admin/app/ui/pages/managecategory/add_category.dart';
 import 'package:sole_space_admin/app/ui/pages/managecategory/manage_category.dart';
 import 'package:sole_space_admin/app/ui/pages/manageorders/manage_orders.dart';
-import 'package:sole_space_admin/app/ui/pages/addbrandproducts/manageproduct/manage_products.dart';
+import 'package:sole_space_admin/app/ui/pages/manageproduct/manage_products.dart';
 import 'package:sole_space_admin/app/ui/pages/manageuser/manage_user.dart';
 import 'package:sole_space_admin/app/ui/pages/splash/splash_page.dart';
 import 'package:sole_space_admin/app/ui/pages/login/login_page.dart';

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sole_space_admin/app/controllers/brand_controller.dart';
@@ -28,14 +30,13 @@ class ManageBrandPage extends StatelessWidget {
                     crossAxisCount: 2, // Number of
                     crossAxisSpacing: 16,
                     mainAxisSpacing: 16,
-                    childAspectRatio: 3 / 2,
+                    childAspectRatio: 1.0,
                   ),
                   padding: const EdgeInsets.all(16),
                   itemCount: _brandController.brands.length,
                   itemBuilder: (context, index) {
                     final brand = _brandController.brands[index];
                     return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         if (brand.logoImage != null)
                           InkWell(
@@ -58,7 +59,7 @@ class ManageBrandPage extends StatelessWidget {
                                                 text: brand.description,
                                               );
                                           _brandController.selectedImage.value =
-                                              brand.logoImage;
+                                              brand.logoImage as File?;
                                           Get.defaultDialog(
                                             title: 'Edit: ${brand.name}',
                                             titleStyle: TextStyle(
@@ -179,16 +180,39 @@ class ManageBrandPage extends StatelessWidget {
                                 ),
                               );
                             },
-                            child: Container(
-                              height: 100,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                image: DecorationImage(
-                                  image: FileImage(brand.logoImage!),
-                                  fit: BoxFit.cover,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Flexible(
+                                  child: Container(
+                                    height: 100,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      shape:
+                                          BoxShape
+                                              .circle, // Make the container circular
+                                      image: DecorationImage(
+                                        image: NetworkImage(brand.logoImage!),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                SizedBox(
+                                  height: 8,
+                                ), // Add spacing between the circle and the text
+                                Text(
+                                  brand.name,
+                                  style: TextStyle(
+                                    color:
+                                        Colors
+                                            .black, // Use a visible color for the text
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
                             ),
                           ),
                       ],

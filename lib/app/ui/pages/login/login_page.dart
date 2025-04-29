@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:sole_space_admin/app/controllers/auth_controller.dart';
 import 'package:sole_space_admin/app/core/widgets/custom_button.dart';
 import 'package:sole_space_admin/app/core/widgets/custom_text_field.dart';
+import 'package:sole_space_admin/utils/utils.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -39,13 +40,7 @@ class LoginPage extends StatelessWidget {
                     controller: _emailController,
                     prefixIcon: const Icon(Icons.email),
                     keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Enter your Email';
-                      } else {
-                        return null;
-                      }
-                    },
+                    validator: (value) => validateEmail(value),
                   ),
                   const SizedBox(height: 16),
                   Obx(
@@ -64,13 +59,7 @@ class LoginPage extends StatelessWidget {
                         ),
                       ),
                       obscureText: _authController.isPasswordvisible.value,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter you password';
-                        } else {
-                          return null;
-                        }
-                      },
+                      validator: (value) => validatePassword(value),
                     ),
                   ),
                   const SizedBox(height: 24),
