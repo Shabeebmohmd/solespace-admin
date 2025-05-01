@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sole_space_admin/app/data/models/brand_model.dart';
 
 class BrandService {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final CollectionReference _brandsRef = FirebaseFirestore.instance.collection(
     'brands',
   );

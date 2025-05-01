@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sole_space_admin/app/data/models/catogory_model.dart';
 
 class CategoryService {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final CollectionReference _categoriesRef = FirebaseFirestore.instance
       .collection('categories');
 

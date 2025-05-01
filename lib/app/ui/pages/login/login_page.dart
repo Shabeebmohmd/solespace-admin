@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 import 'package:sole_space_admin/app/controllers/auth_controller.dart';
 import 'package:sole_space_admin/app/core/widgets/custom_button.dart';
 import 'package:sole_space_admin/app/core/widgets/custom_text_field.dart';
-import 'package:sole_space_admin/utils/utils.dart';
+import 'package:sole_space_admin/app/core/widgets/dismissible_keyboard.dart';
+import 'package:sole_space_admin/utils/validate_utils.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -15,71 +16,87 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    'Admin Login',
-                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blueAccent,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 32),
-                  CustomTextField(
-                    label: 'Email',
-                    controller: _emailController,
-                    prefixIcon: const Icon(Icons.email),
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) => validateEmail(value),
-                  ),
-                  const SizedBox(height: 16),
-                  Obx(
-                    () => CustomTextField(
-                      label: 'Password',
-                      // hint: 'Password',
-                      controller: _passwordController,
-                      prefixIcon: IconButton(
-                        onPressed: () {
-                          _authController.togglePasswordVisibility();
-                        },
-                        icon: Icon(
-                          _authController.isPasswordvisible.value
-                              ? Icons.lock
-                              : Icons.lock_open,
-                        ),
-                      ),
-                      obscureText: _authController.isPasswordvisible.value,
-                      validator: (value) => validatePassword(value),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  CustomButton(
-                    text: 'Login',
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        _authController.logIn(
-                          _emailController.text.trim(),
-                          _passwordController.text,
-                        );
-                      }
-                    },
-                  ),
-                ],
+    return DismissibleKeyboard(
+      child: Scaffold(
+        body: SafeArea(
+          child: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _buildText(context),
+                    const SizedBox(height: 32),
+                    _buildEmailField(),
+                    const SizedBox(height: 16),
+                    Obx(() => _buildPasswordField()),
+                    const SizedBox(height: 24),
+                    _buildLoginButton(),
+                  ],
+                ),
               ),
             ),
           ),
         ),
       ),
+    );
+  }
+
+  CustomButton _buildLoginButton() {
+    return CustomButton(
+      text: 'Login',
+      onPressed: () {
+        if (_formKey.currentState!.validate()) {
+          _authController.logIn(
+            _emailController.text.trim(),
+            _passwordController.text,
+          );
+        }
+      },
+    );
+  }
+
+  CustomTextField _buildPasswordField() {
+    return CustomTextField(
+      label: 'Password',
+      // hint: 'Password',
+      controller: _passwordController,
+      prefixIcon: IconButton(
+        onPressed: () {
+          _authController.togglePasswordVisibility();
+        },
+        icon: Icon(
+          _authController.isPasswordvisible.value
+              ? Icons.lock
+              : Icons.lock_open,
+        ),
+      ),
+      obscureText: _authController.isPasswordvisible.value,
+      validator: (value) => ValidationUtils.validatePassword(value),
+    );
+  }
+
+  CustomTextField _buildEmailField() {
+    return CustomTextField(
+      label: 'Email',
+      controller: _emailController,
+      prefixIcon: const Icon(Icons.email),
+      keyboardType: TextInputType.emailAddress,
+      validator: (value) => ValidationUtils.validateEmail(value),
+    );
+  }
+
+  Text _buildText(BuildContext context) {
+    return Text(
+      'Admin Login',
+      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+        fontWeight: FontWeight.bold,
+        color: Colors.blueAccent,
+      ),
+      textAlign: TextAlign.center,
     );
   }
 }

@@ -38,7 +38,7 @@ class BrandController extends GetxController {
       // Upload the image to Cloudinary
       String? logoUrl;
       if (logo != null) {
-        logoUrl = await _cloudinaryService.uploadImage(logo);
+        logoUrl = await _cloudinaryService.uploadBrandImage(logo);
       }
 
       // Create a new brand object
@@ -101,7 +101,7 @@ class BrandController extends GetxController {
       // Upload the image to Cloudinary if a new image is selected
       String? logoUrl;
       if (logo != null) {
-        logoUrl = await _cloudinaryService.uploadImage(logo);
+        logoUrl = await _cloudinaryService.uploadBrandImage(logo);
       }
 
       // Update the brand object
@@ -167,5 +167,9 @@ class BrandController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  void clearSelectedImage() {
+    selectedImage.value = null;
   }
 }

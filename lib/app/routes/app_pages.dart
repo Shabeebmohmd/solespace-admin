@@ -7,6 +7,7 @@ import 'package:sole_space_admin/app/ui/pages/dashboard/dash_board.dart';
 import 'package:sole_space_admin/app/ui/pages/managecategory/add_category.dart';
 import 'package:sole_space_admin/app/ui/pages/managecategory/manage_category.dart';
 import 'package:sole_space_admin/app/ui/pages/manageorders/manage_orders.dart';
+import 'package:sole_space_admin/app/ui/pages/manageproduct/edit_products.dart';
 import 'package:sole_space_admin/app/ui/pages/manageproduct/manage_products.dart';
 import 'package:sole_space_admin/app/ui/pages/manageuser/manage_user.dart';
 import 'package:sole_space_admin/app/ui/pages/splash/splash_page.dart';
@@ -24,11 +25,9 @@ class AppPages {
     // product&brand management&category
     GetPage(name: AppRoutes.manageBrand, page: () => ManageBrandPage()),
     GetPage(name: AppRoutes.addBrand, page: () => AddBrandsPage()),
-    GetPage(
-      name: AppRoutes.manageProducts,
-      page: () => const ManageProductsPage(),
-    ),
-    GetPage(name: AppRoutes.addProducts, page: () => AddProductsPage()),
+    GetPage(name: AppRoutes.manageProducts, page: () => ManageProductsPage()),
+    GetPage(name: AppRoutes.addProducts, page: () => AddProductPage()),
+    GetPage(name: AppRoutes.editProducts, page: () => EditProductsPage()),
     GetPage(name: AppRoutes.manageCategory, page: () => ManageCategoryPage()),
     GetPage(name: AppRoutes.addCategory, page: () => AddCategoryPage()),
 

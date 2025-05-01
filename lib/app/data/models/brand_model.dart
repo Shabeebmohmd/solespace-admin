@@ -1,5 +1,3 @@
-import 'dart:io';
-
 class Brand {
   final String id;
   final String name;
