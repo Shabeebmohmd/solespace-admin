@@ -68,13 +68,19 @@ class ManageProductsPage extends StatelessWidget {
         child: Column(
           children: [
             product.imageUrls.isNotEmpty
-                ? Image.network(
-                  product.imageUrls[0],
-                  height: 100,
-                  fit: BoxFit.cover,
-                  errorBuilder:
-                      (context, error, stackTrace) =>
-                          const Icon(Icons.broken_image),
+                ? ClipRRect(
+                  borderRadius: BorderRadius.circular(
+                    8,
+                  ), // Set the border radius
+                  child: Image.network(
+                    product.imageUrls[0],
+                    height: 100,
+                    width: 100,
+                    fit: BoxFit.cover,
+                    errorBuilder:
+                        (context, error, stackTrace) =>
+                            const Icon(Icons.broken_image),
+                  ),
                 )
                 : const Icon(Icons.image_not_supported, size: 100),
             smallSpacing,

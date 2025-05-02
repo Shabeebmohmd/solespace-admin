@@ -42,6 +42,7 @@ class CloudinaryService {
       final response = await _cloudinary.uploadFile(
         CloudinaryFile.fromFile(
           image.path,
+          folder: 'products',
           resourceType: CloudinaryResourceType.Image,
         ),
       );

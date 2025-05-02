@@ -92,7 +92,7 @@ class ProductController extends GetxController {
       );
 
       await _productService.addProduct(product);
-      products.add(product);
+      // products.add(product);
       Get.snackbar('Success', 'Product added successfully');
     } catch (e) {
       Get.snackbar('Error', 'Failed to add product: $e');

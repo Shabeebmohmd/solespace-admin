@@ -68,9 +68,9 @@ class AddProductPage extends StatelessWidget {
 
   CustomButton _buildAddButton() {
     return CustomButton(
-      onPressed: () async {
+      onPressed: () {
         if (_formKey.currentState!.validate()) {
-          await controller.addProduct(
+          controller.addProduct(
             name: nameController.text,
             description: descriptionController.text,
             brandId: selectedBrand.value,

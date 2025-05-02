@@ -27,57 +27,71 @@ class AddBrandsPage extends StatelessWidget {
               child: Column(
                 children: [
                   Obx(() {
-                    return GestureDetector(
-                      onTap: brandController.pickImage,
-                      child: CircleAvatar(
-                        radius: 80,
-                        backgroundImage:
-                            brandController.selectedImage.value != null
-                                ? FileImage(
-                                  brandController.selectedImage.value!,
-                                )
-                                : null,
-                        child:
-                            brandController.selectedImage.value == null
-                                ? Icon(Icons.add_a_photo, size: 30)
-                                : null,
-                      ),
-                    );
+                    return _buildImage();
                   }),
                   SizedBox(height: 16),
-                  CustomTextField(
-                    label: 'Brand name',
-                    controller: _nameController,
-                    validator: (value) => validateBrand(value),
-                  ),
+                  _buildNameField(),
                   SizedBox(height: 16),
-                  CustomTextField(
-                    label: 'Description',
-                    controller: _descriptionController,
-                    maxLines: 3,
-                    validator: (value) => validateBrandDescription(value),
-                  ),
+                  _buildDescriptionField(),
                   SizedBox(height: 24),
-                  CustomButton(
-                    text: 'Add brand',
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        brandController.addBrand(
-                          _nameController.text,
-                          _descriptionController.text,
-                          brandController.selectedImage.value,
-                        );
-                        brandController.selectedImage.value = null;
-                        Get.back();
-                      }
-                    },
-                    isLoading: brandController.isLoading.value,
-                  ),
+                  _buildAddButton(),
                 ],
               ),
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  CustomButton _buildAddButton() {
+    return CustomButton(
+      text: 'Add brand',
+      onPressed: () {
+        if (_formKey.currentState!.validate()) {
+          brandController.addBrand(
+            _nameController.text,
+            _descriptionController.text,
+            brandController.selectedImage.value,
+          );
+          brandController.selectedImage.value = null;
+          Get.back();
+        }
+      },
+      isLoading: brandController.isLoading.value,
+    );
+  }
+
+  CustomTextField _buildDescriptionField() {
+    return CustomTextField(
+      label: 'Description',
+      controller: _descriptionController,
+      maxLines: 3,
+      validator: (value) => validateBrandDescription(value),
+    );
+  }
+
+  CustomTextField _buildNameField() {
+    return CustomTextField(
+      label: 'Brand name',
+      controller: _nameController,
+      validator: (value) => validateBrand(value),
+    );
+  }
+
+  GestureDetector _buildImage() {
+    return GestureDetector(
+      onTap: brandController.pickImage,
+      child: CircleAvatar(
+        radius: 80,
+        backgroundImage:
+            brandController.selectedImage.value != null
+                ? FileImage(brandController.selectedImage.value!)
+                : null,
+        child:
+            brandController.selectedImage.value == null
+                ? Icon(Icons.add_a_photo, size: 30)
+                : null,
       ),
     );
   }
