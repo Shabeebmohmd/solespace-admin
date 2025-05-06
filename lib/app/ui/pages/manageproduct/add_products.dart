@@ -17,6 +17,9 @@ class AddProductPage extends StatelessWidget {
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
   final TextEditingController stockController = TextEditingController();
+  final TextEditingController discountController = TextEditingController();
+  final TextEditingController sizesController = TextEditingController();
+  final TextEditingController colorsController = TextEditingController();
   final RxString selectedBrand = ''.obs;
   final RxString selectedCategory = ''.obs;
   final RxList<XFile> selectedImages = <XFile>[].obs;
@@ -38,17 +41,27 @@ class AddProductPage extends StatelessWidget {
                       key: _formKey,
                       child: Column(
                         children: [
+                          _informationText('Basic Information'),
+                          smallSpacing,
                           _buildNameField(),
-                          mediumSpacing,
-                          _buildDescriptionField(),
                           mediumSpacing,
                           _buildBrandDropDown(),
                           mediumSpacing,
                           _buildCategoryDropDown(),
                           mediumSpacing,
+                          _informationText('Price Information'),
                           _buildPriceField(),
                           mediumSpacing,
+                          _buildDiscountField(),
+                          mediumSpacing,
                           _buildStockField(),
+                          mediumSpacing,
+                          _informationText('Size and Color Information'),
+                          _buildSizesField(),
+                          mediumSpacing,
+                          _buildColorsField(),
+                          mediumSpacing,
+                          _buildDescriptionField(),
                           extraMediumSpacing,
                           Row(
                             mainAxisSize: MainAxisSize.max,
@@ -66,18 +79,56 @@ class AddProductPage extends StatelessWidget {
     );
   }
 
+  CustomTextField _buildDiscountField() {
+    return CustomTextField(
+      label: 'Discounted Price',
+      controller: discountController,
+      keyboardType: TextInputType.number,
+      validator:
+          (p0) => ValidationUtils.validateNumber(
+            p0,
+            'Discounted price',
+            allowDecimal: true,
+          ),
+    );
+  }
+
+  Align _informationText(String text) {
+    return Align(alignment: Alignment.centerLeft, child: Text(text));
+  }
+
   CustomButton _buildAddButton() {
     return CustomButton(
       onPressed: () {
         if (_formKey.currentState!.validate()) {
+          // Split comma-separated sizes and colors into lists
+          List<String> sizes =
+              sizesController.text
+                  .split(',')
+                  .map((e) => e.trim())
+                  .where((e) => e.isNotEmpty)
+                  .toList();
+          List<String> colors =
+              colorsController.text
+                  .split(',')
+                  .map((e) => e.trim())
+                  .where((e) => e.isNotEmpty)
+                  .toList();
+
           controller.addProduct(
             name: nameController.text,
             description: descriptionController.text,
             brandId: selectedBrand.value,
             categoryId: selectedCategory.value,
             price: double.parse(priceController.text),
+            discountPrice:
+                discountController.text.isEmpty
+                    ? null
+                    : double.parse(discountController.text),
             stockQuantity: int.parse(stockController.text),
             images: selectedImages,
+            sizes: sizes,
+            colors: colors,
             isAvailable: true,
           );
           Get.back();
@@ -125,8 +176,8 @@ class AddProductPage extends StatelessWidget {
 
   CustomDropdown _buildCategoryDropDown() {
     return CustomDropdown(
-      value: selectedBrand.value.isEmpty ? null : selectedCategory.value,
-      hintText: 'select Category',
+      value: selectedCategory.value.isEmpty ? null : selectedCategory.value,
+      hintText: 'Select Category',
       items: controller.categories,
       onChanged: (value) => selectedCategory.value = value!,
       validator: (value) => ValidationUtils.validateDropdown(value, 'category'),
@@ -136,7 +187,7 @@ class AddProductPage extends StatelessWidget {
   CustomDropdown _buildBrandDropDown() {
     return CustomDropdown(
       value: selectedBrand.value.isEmpty ? null : selectedBrand.value,
-      hintText: 'select Brand',
+      hintText: 'Select Brand',
       items: controller.brands,
       onChanged: (value) => selectedBrand.value = value!,
       validator: (value) => ValidationUtils.validateDropdown(value, 'brand'),
@@ -147,6 +198,7 @@ class AddProductPage extends StatelessWidget {
     return CustomTextField(
       controller: descriptionController,
       label: 'Description',
+      maxLines: 3,
       validator:
           (value) => ValidationUtils.validateRequired(value, 'description'),
     );
@@ -158,6 +210,22 @@ class AddProductPage extends StatelessWidget {
       label: 'Product Name',
       validator:
           (value) => ValidationUtils.validateRequired(value, 'product name'),
+    );
+  }
+
+  CustomTextField _buildSizesField() {
+    return CustomTextField(
+      controller: sizesController,
+      label: 'Sizes (comma-separated, e.g., 7,8,9)',
+      validator: (value) => ValidationUtils.validateRequired(value, 'sizes'),
+    );
+  }
+
+  CustomTextField _buildColorsField() {
+    return CustomTextField(
+      controller: colorsController,
+      label: 'Colors (comma-separated, e.g., Red,Blue)',
+      validator: (value) => ValidationUtils.validateRequired(value, 'colors'),
     );
   }
 }

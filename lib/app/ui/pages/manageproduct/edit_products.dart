@@ -23,6 +23,9 @@ class EditProductsPage extends StatelessWidget {
   late final TextEditingController _descriptionController;
   late final TextEditingController _priceController;
   late final TextEditingController _stockController;
+  late final TextEditingController _dicountController;
+  late final TextEditingController _sizeController;
+  late final TextEditingController _colorController;
   final RxString selectedBrand = ''.obs;
   final RxString selectedCategory = ''.obs;
   final RxList<XFile> selectedImages = <XFile>[].obs;
@@ -35,6 +38,11 @@ class EditProductsPage extends StatelessWidget {
     _nameController = TextEditingController(text: product.name);
     _descriptionController = TextEditingController(text: product.description);
     _priceController = TextEditingController(text: product.price.toString());
+    _dicountController = TextEditingController(
+      text: product.discountPrice.toString(),
+    );
+    _sizeController = TextEditingController(text: product.sizes.join(', '));
+    _colorController = TextEditingController(text: product.colors.join(', '));
     _stockController = TextEditingController(
       text: product.stockQuantity.toString(),
     );
@@ -55,17 +63,33 @@ class EditProductsPage extends StatelessWidget {
                 children: [
                   _buildNameField(),
                   mediumSpacing,
-                  _buildDescriptionField(),
-                  mediumSpacing,
                   _buildBrandDropDown(),
                   mediumSpacing,
                   _buildCategoryDropDown(),
                   mediumSpacing,
                   _buildPriceField(),
                   mediumSpacing,
+                  CustomTextField(
+                    controller: _dicountController,
+                    label: 'Discount Price',
+                    keyboardType: TextInputType.number,
+                    validator:
+                        (value) => ValidationUtils.validateNumber(
+                          value,
+                          'Discount Price',
+                          allowDecimal: true,
+                        ),
+                  ),
+                  mediumSpacing,
+                  _buildSizeField(),
+                  mediumSpacing,
+                  _buildColorField(),
+
+                  mediumSpacing,
                   _buildStockField(),
                   mediumSpacing,
-                  _buildExistingImages(), // Display existing images
+                  _buildDescriptionField(),
+                  // _buildExistingImages(), // Display existing images
                   mediumSpacing,
                   Row(
                     mainAxisSize: MainAxisSize.max,
@@ -80,6 +104,22 @@ class EditProductsPage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  CustomTextField _buildColorField() {
+    return CustomTextField(
+      controller: _colorController,
+      label: 'Colors (comma-separated, e.g., Red,Blue)',
+      validator: (value) => ValidationUtils.validateRequired(value, 'colors'),
+    );
+  }
+
+  CustomTextField _buildSizeField() {
+    return CustomTextField(
+      controller: _sizeController,
+      label: 'Sizes (comma-separated, e.g., 7,8,9)',
+      validator: (value) => ValidationUtils.validateRequired(value, 'sizes'),
     );
   }
 
@@ -154,8 +194,8 @@ class EditProductsPage extends StatelessWidget {
           // Update in Firebase
           await controller.updateProduct(updatedProduct);
           // Navigate back after update
+          Get.back();
         }
-        Get.back();
       },
       text: 'Update Product',
       isFullWidth: false,
@@ -227,6 +267,7 @@ class EditProductsPage extends StatelessWidget {
     return CustomTextField(
       controller: _descriptionController,
       label: 'Description',
+      maxLines: 3,
       validator:
           (value) => ValidationUtils.validateRequired(value, 'description'),
     );

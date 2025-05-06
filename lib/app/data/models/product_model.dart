@@ -8,8 +8,8 @@ class Product {
   double? discountPrice; // Optional discounted price
   int stockQuantity; // Available stock
   List<String> imageUrls; // List of image URLs from Cloudinary
-  List<String>? sizes; // Available sizes (e.g., ["7", "8", "9"])
-  List<String>? colors; // Available colors (e.g., ["Red", "Blue"])
+  List<String> sizes; // Available sizes (e.g., ["7", "8", "9"])
+  List<String> colors; // Available colors (e.g., ["Red", "Blue"])
   bool isAvailable; // Product availability status
   DateTime createdAt; // Timestamp for product creation
   DateTime updatedAt; // Timestamp for last update
@@ -24,8 +24,8 @@ class Product {
     this.discountPrice,
     required this.stockQuantity,
     required this.imageUrls,
-    this.sizes,
-    this.colors,
+    required this.sizes,
+    required this.colors,
     required this.isAvailable,
     required this.createdAt,
     required this.updatedAt,
@@ -60,8 +60,8 @@ class Product {
     discountPrice: json['discountPrice'],
     stockQuantity: json['stockQuantity'],
     imageUrls: List<String>.from(json['imageUrls']),
-    sizes: json['sizes'] != null ? List<String>.from(json['sizes']) : null,
-    colors: json['colors'] != null ? List<String>.from(json['colors']) : null,
+    sizes: List<String>.from(json['sizes']),
+    colors: List<String>.from(json['colors']),
     isAvailable: json['isAvailable'],
     createdAt: DateTime.parse(json['createdAt']),
     updatedAt: DateTime.parse(json['updatedAt']),

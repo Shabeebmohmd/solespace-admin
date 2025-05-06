@@ -33,7 +33,7 @@ class ManageProductsPage extends StatelessWidget {
             crossAxisCount: 2,
             crossAxisSpacing: 10,
             mainAxisSpacing: 10,
-            childAspectRatio: 0.5,
+            childAspectRatio: 0.4,
           ),
           itemCount: _productController.products.length,
           itemBuilder: (context, index) {
@@ -53,7 +53,7 @@ class ManageProductsPage extends StatelessWidget {
                   ),
                 );
               },
-              child: _buildCard(product),
+              child: _buildCard(context, product),
             );
           },
         );
@@ -61,51 +61,133 @@ class ManageProductsPage extends StatelessWidget {
     );
   }
 
-  CustomCard _buildCard(Product product) {
+  CustomCard _buildCard(BuildContext context, Product product) {
     return CustomCard(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            product.imageUrls.isNotEmpty
-                ? ClipRRect(
-                  borderRadius: BorderRadius.circular(
-                    8,
-                  ), // Set the border radius
-                  child: Image.network(
-                    product.imageUrls[0],
-                    height: 100,
-                    width: 100,
-                    fit: BoxFit.cover,
-                    errorBuilder:
-                        (context, error, stackTrace) =>
-                            const Icon(Icons.broken_image),
-                  ),
-                )
-                : const Icon(Icons.image_not_supported, size: 100),
+            product.imageUrls.isNotEmpty ? _buildImage(product) : _showIcon(),
             smallSpacing,
-            Text(
-              product.name,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
+            _productName(product),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 smallSpacing,
-                Text(
-                  'Brand: ${_productController.getBrandName(product.brandId)}',
-                ),
-                Text(
-                  'Category: ${_productController.getCategoryName(product.categoryId)}',
-                ),
-                Text('Price: \$${product.price.toStringAsFixed(2)}'),
-                Text('Stock: ${product.stockQuantity}'),
+                _brandName(context, product),
+                _category(context, product),
+                _price(context, product),
+                _dicountPrice(context, product),
+                _stock(context, product),
               ],
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  RichText _stock(BuildContext context, Product product) {
+    return RichText(
+      text: TextSpan(
+        style: DefaultTextStyle.of(context).style, // inherit default text style
+        children: [
+          TextSpan(
+            text: 'Stock:',
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          TextSpan(text: '${product.stockQuantity}'),
+        ],
+      ),
+    );
+  }
+
+  RichText _dicountPrice(BuildContext context, Product product) {
+    return RichText(
+      text: TextSpan(
+        style: DefaultTextStyle.of(context).style, // inherit default text style
+        children: [
+          TextSpan(
+            text: 'Discounted Price:',
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          TextSpan(
+            text:
+                '\$${product.discountPrice != null ? product.discountPrice!.toStringAsFixed(2) : 'N/A'}',
+          ),
+        ],
+      ),
+    );
+  }
+
+  RichText _price(BuildContext context, Product product) {
+    return RichText(
+      text: TextSpan(
+        style: DefaultTextStyle.of(context).style, // inherit default text style
+        children: [
+          TextSpan(
+            text: 'Price: ',
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          TextSpan(text: '\$${product.price.toStringAsFixed(2)}'),
+        ],
+      ),
+    );
+  }
+
+  RichText _category(BuildContext context, Product product) {
+    return RichText(
+      text: TextSpan(
+        style: DefaultTextStyle.of(context).style, // inherit default text style
+        children: [
+          TextSpan(
+            text: 'Category: ',
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          TextSpan(
+            text: _productController.getCategoryName(product.categoryId),
+          ),
+        ],
+      ),
+    );
+  }
+
+  RichText _brandName(BuildContext context, Product product) {
+    return RichText(
+      text: TextSpan(
+        style: DefaultTextStyle.of(context).style, // inherit default text style
+        children: [
+          TextSpan(
+            text: 'Brand: ',
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          TextSpan(text: _productController.getBrandName(product.brandId)),
+        ],
+      ),
+    );
+  }
+
+  Text _productName(Product product) {
+    return Text(
+      product.name,
+      style: const TextStyle(fontWeight: FontWeight.bold),
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+    );
+  }
+
+  Icon _showIcon() => const Icon(Icons.image_not_supported, size: 100);
+
+  ClipRRect _buildImage(Product product) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8), // Set the border radius
+      child: Image.network(
+        product.imageUrls[0],
+        height: 100,
+        width: 100,
+        fit: BoxFit.cover,
+        errorBuilder:
+            (context, error, stackTrace) => const Icon(Icons.broken_image),
       ),
     );
   }
@@ -115,16 +197,6 @@ class ManageProductsPage extends StatelessWidget {
       title: Text('Delete'),
       onTap: () {
         Get.back();
-        // Get.defaultDialog(
-        //   title: 'Delete product',
-        //   middleText: 'Are you sure you want to delete this product?',
-        //   textConfirm: 'Delete',
-        //   textCancel: 'Cancel',
-        //   onConfirm: () async {
-        //     Get.back();
-        //     await _productController.deleteProduct(product.id!);
-        //   },
-        // );
         CustomDialog.showConfirmation(
           title: 'Delete product',
           message: 'Are you sure you want to delete this product?',

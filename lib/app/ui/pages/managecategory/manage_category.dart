@@ -6,6 +6,7 @@ import 'package:sole_space_admin/app/core/widgets/custom_card.dart';
 import 'package:sole_space_admin/app/core/widgets/custom_text_field.dart';
 import 'package:sole_space_admin/app/core/widgets/dismissible_keyboard.dart';
 import 'package:sole_space_admin/app/routes/app_routes.dart';
+import 'package:sole_space_admin/utils/validate_utils.dart';
 
 class ManageCategoryPage extends StatelessWidget {
   ManageCategoryPage({super.key});
@@ -64,28 +65,24 @@ class ManageCategoryPage extends StatelessWidget {
                                             CustomTextField(
                                               label: 'Category name',
                                               controller: nameController,
-                                              validator: (value) {
-                                                if (value == null ||
-                                                    value.isEmpty) {
-                                                  return 'Enter category name';
-                                                } else {
-                                                  return null;
-                                                }
-                                              },
+                                              validator:
+                                                  (value) =>
+                                                      ValidationUtils.validateRequired(
+                                                        value,
+                                                        'Category',
+                                                      ),
                                             ),
                                             SizedBox(height: 16),
                                             CustomTextField(
                                               label: 'Description',
                                               controller: descriptionController,
                                               maxLines: 3,
-                                              validator: (value) {
-                                                if (value == null ||
-                                                    value.isEmpty) {
-                                                  return 'Enter description';
-                                                } else {
-                                                  return null;
-                                                }
-                                              },
+                                              validator:
+                                                  (value) =>
+                                                      ValidationUtils.validateRequired(
+                                                        value,
+                                                        'Description',
+                                                      ),
                                             ),
                                           ],
                                         ),
