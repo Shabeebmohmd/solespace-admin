@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -70,12 +72,51 @@ class AddProductPage extends StatelessWidget {
                           ),
                           mediumSpacing,
                           Text('Selected Images: ${selectedImages.length}'),
+                          mediumSpacing,
+                          _buildExistingImages(),
                         ],
                       ),
                     ),
                   ),
         ),
       ),
+    );
+  }
+
+  Widget _buildExistingImages() {
+    return Obx(
+      () =>
+          selectedImages.isNotEmpty
+              ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Selected Images:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 100,
+                    child: ListView.separated(
+                      separatorBuilder: (context, index) => SizedBox(width: 10),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: selectedImages.length,
+                      itemBuilder: (context, index) {
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.file(
+                            // Use File for local images
+                            File(selectedImages[index].path),
+                            width: 100,
+                            height: 100,
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              )
+              : const Text('No images selected.'),
     );
   }
 

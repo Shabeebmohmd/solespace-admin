@@ -56,6 +56,7 @@ class LoginPage extends StatelessWidget {
           );
         }
       },
+      isLoading: _authController.isLoading.value,
     );
   }
 
@@ -69,12 +70,12 @@ class LoginPage extends StatelessWidget {
           _authController.togglePasswordVisibility();
         },
         icon: Icon(
-          _authController.isPasswordvisible.value
+          _authController.isPasswordVisible.value
               ? Icons.lock
               : Icons.lock_open,
         ),
       ),
-      obscureText: _authController.isPasswordvisible.value,
+      obscureText: _authController.isPasswordVisible.value,
       validator: (value) => ValidationUtils.validatePassword(value),
     );
   }

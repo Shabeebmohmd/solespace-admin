@@ -47,6 +47,7 @@ dependencies:
   firebase_app_check:
   http: 
   cloudinary_public:
+  carousel_slider:
   
 
 dev_dependencies:

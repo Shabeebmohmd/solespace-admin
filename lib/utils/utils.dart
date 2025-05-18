@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 String? validateEmail(String? value) {
@@ -41,3 +42,18 @@ const SizedBox smallSpacing = SizedBox(height: 8);
 const SizedBox mediumSpacing = SizedBox(height: 16);
 const SizedBox extraMediumSpacing = SizedBox(height: 32);
 const SizedBox largeSpacing = SizedBox(height: 48);
+
+Widget buildButtonLoadingIndicator({
+  double size = 20,
+  Color indicatorColor = Colors.white,
+  double strokeWidth = 2.0,
+}) {
+  return SizedBox(
+    height: size,
+    width: size,
+    child: CircularProgressIndicator(
+      strokeWidth: strokeWidth,
+      valueColor: AlwaysStoppedAnimation<Color>(indicatorColor),
+    ),
+  );
+}

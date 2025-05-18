@@ -9,6 +9,7 @@ import 'package:sole_space_admin/app/core/widgets/custom_text_field.dart';
 import 'package:sole_space_admin/app/core/widgets/dismissible_keyboard.dart';
 import 'package:sole_space_admin/app/data/models/product_model.dart';
 import 'package:sole_space_admin/app/data/services/cloudinary_service.dart';
+import 'package:sole_space_admin/app/routes/app_routes.dart';
 import 'package:sole_space_admin/utils/utils.dart';
 import 'package:sole_space_admin/utils/validate_utils.dart';
 
@@ -69,27 +70,15 @@ class EditProductsPage extends StatelessWidget {
                   mediumSpacing,
                   _buildPriceField(),
                   mediumSpacing,
-                  CustomTextField(
-                    controller: _dicountController,
-                    label: 'Discount Price',
-                    keyboardType: TextInputType.number,
-                    validator:
-                        (value) => ValidationUtils.validateNumber(
-                          value,
-                          'Discount Price',
-                          allowDecimal: true,
-                        ),
-                  ),
+                  _buildDiscountPrice(),
                   mediumSpacing,
                   _buildSizeField(),
                   mediumSpacing,
                   _buildColorField(),
-
                   mediumSpacing,
                   _buildStockField(),
                   mediumSpacing,
                   _buildDescriptionField(),
-                  // _buildExistingImages(), // Display existing images
                   mediumSpacing,
                   Row(
                     mainAxisSize: MainAxisSize.max,
@@ -98,12 +87,28 @@ class EditProductsPage extends StatelessWidget {
                   ),
                   mediumSpacing,
                   Text('New Images Selected: ${selectedImages.length}'),
+                  mediumSpacing,
+                  _buildExistingImages(),
                 ],
               ),
             ),
           ),
         ),
       ),
+    );
+  }
+
+  CustomTextField _buildDiscountPrice() {
+    return CustomTextField(
+      controller: _dicountController,
+      label: 'Discount Price',
+      keyboardType: TextInputType.number,
+      validator:
+          (value) => ValidationUtils.validateNumber(
+            value,
+            'Discount Price',
+            allowDecimal: true,
+          ),
     );
   }
 
@@ -135,20 +140,24 @@ class EditProductsPage extends StatelessWidget {
             ),
             SizedBox(
               height: 100,
-              child: ListView.builder(
+              child: ListView.separated(
+                separatorBuilder: (context, index) => SizedBox(width: 10),
                 scrollDirection: Axis.horizontal,
                 itemCount: product.imageUrls.length,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.only(right: 8),
-                    child: Image.network(
-                      product.imageUrls[index],
-                      width: 80,
-                      height: 80,
-                      fit: BoxFit.cover,
-                      errorBuilder:
-                          (context, error, stackTrace) =>
-                              const Icon(Icons.broken_image),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.network(
+                        product.imageUrls[index],
+                        width: 80,
+                        height: 80,
+                        fit: BoxFit.cover,
+                        errorBuilder:
+                            (context, error, stackTrace) =>
+                                const Icon(Icons.broken_image),
+                      ),
                     ),
                   );
                 },
@@ -194,11 +203,12 @@ class EditProductsPage extends StatelessWidget {
           // Update in Firebase
           await controller.updateProduct(updatedProduct);
           // Navigate back after update
-          Get.back();
+          Get.offNamed(AppRoutes.manageProducts);
         }
       },
       text: 'Update Product',
       isFullWidth: false,
+      isLoading: controller.isLoading.value,
     );
   }
 

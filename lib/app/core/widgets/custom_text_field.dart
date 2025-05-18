@@ -74,12 +74,3 @@ class CustomTextField extends StatelessWidget {
     );
   }
 }
-
-
-        // Text(
-        //   label,
-        //   style: Theme.of(
-        //     context,
-        //   ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500),
-        // ),
-        // const SizedBox(height: 8),

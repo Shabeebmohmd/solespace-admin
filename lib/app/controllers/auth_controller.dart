@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:sole_space_admin/app/data/services/auth_service.dart';
@@ -6,7 +8,8 @@ import 'package:sole_space_admin/app/routes/app_routes.dart';
 class AuthController extends GetxController {
   final AuthService _authService = AuthService();
   final Rx<User?> currentUser = Rx<User?>(null);
-  final RxBool isPasswordvisible = true.obs;
+  final RxBool isPasswordVisible = true.obs;
+  RxBool isLoading = false.obs;
 
   @override
   void onInit() {
@@ -29,14 +32,19 @@ class AuthController extends GetxController {
   }
 
   Future<void> logIn(String email, String password) async {
-    final user = await _authService.logIn(email, password);
-    if (user != null) {
-      if (user.email == 'shabeebmohmd47@gmail.com') {
-        Get.snackbar('Success', 'Welcome');
-        Get.offAllNamed(AppRoutes.home);
-      } else {
-        Get.snackbar('Error', 'Invalid credential');
+    try {
+      // isLoading = true as RxBool;
+      final user = await _authService.logIn(email, password);
+      if (user != null) {
+        if (user.email == 'shabeebmohmd47@gmail.com') {
+          Get.snackbar('Success', 'Welcome');
+          Get.offAllNamed(AppRoutes.home);
+        } else {
+          Get.snackbar('Error', 'Invalid credential');
+        }
       }
+    } catch (e) {
+      log('e:$e');
     }
   }
 
@@ -45,7 +53,7 @@ class AuthController extends GetxController {
   }
 
   void togglePasswordVisibility() {
-    isPasswordvisible.value = !isPasswordvisible.value;
+    isPasswordVisible.value = !isPasswordVisible.value;
   }
 }
 
