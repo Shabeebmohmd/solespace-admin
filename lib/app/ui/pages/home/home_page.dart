@@ -19,7 +19,10 @@ class HomePage extends StatelessWidget {
         title: Text('SoleSpace'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout),
+            icon: Icon(
+              Icons.logout,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
             onPressed:
                 () => Get.defaultDialog(
                   title: 'Log out',

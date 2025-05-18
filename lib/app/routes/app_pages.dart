@@ -9,6 +9,7 @@ import 'package:sole_space_admin/app/ui/pages/managecategory/manage_category.dar
 import 'package:sole_space_admin/app/ui/pages/manageorders/manage_orders.dart';
 import 'package:sole_space_admin/app/ui/pages/manageproduct/edit_products.dart';
 import 'package:sole_space_admin/app/ui/pages/manageproduct/manage_products.dart';
+import 'package:sole_space_admin/app/ui/pages/manageproduct/product_details.dart';
 import 'package:sole_space_admin/app/ui/pages/manageuser/manage_user.dart';
 import 'package:sole_space_admin/app/ui/pages/splash/splash_page.dart';
 import 'package:sole_space_admin/app/ui/pages/login/login_page.dart';
@@ -28,6 +29,7 @@ class AppPages {
     GetPage(name: AppRoutes.manageProducts, page: () => ManageProductsPage()),
     GetPage(name: AppRoutes.addProducts, page: () => AddProductPage()),
     GetPage(name: AppRoutes.editProducts, page: () => EditProductsPage()),
+    GetPage(name: AppRoutes.productDetails, page: () => ProductDetailsPage()),
     GetPage(name: AppRoutes.manageCategory, page: () => ManageCategoryPage()),
     GetPage(name: AppRoutes.addCategory, page: () => AddCategoryPage()),
 

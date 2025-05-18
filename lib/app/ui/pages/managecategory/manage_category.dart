@@ -16,122 +16,143 @@ class ManageCategoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DismissibleKeyboard(
-      child: Scaffold(
-        appBar: CustomAppBar(title: Text('Category management')),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () => Get.toNamed(AppRoutes.addCategory),
-          label: Row(children: [Icon(Icons.add), Text('Add new category')]),
-        ),
-        body: Obx(
-          () =>
-              _categoryController.isLoading.value
-                  ? Center(child: CircularProgressIndicator())
-                  : ListView.builder(
-                    itemCount: _categoryController.categories.length,
-                    itemBuilder: (context, index) {
-                      final category = _categoryController.categories[index];
-                      return CustomCard(
-                        child: ListTile(
-                          title: Text(category.name),
-                          subtitle: Text(category.description ?? ''),
-                          trailing: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Material(
-                                elevation: 5,
-                                borderRadius: BorderRadius.circular(8),
-                                child: IconButton(
-                                  onPressed: () {
-                                    final nameController =
-                                        TextEditingController(
-                                          text: category.name,
-                                        );
-                                    final descriptionController =
-                                        TextEditingController(
-                                          text: category.description,
-                                        );
-                                    Get.defaultDialog(
-                                      title: 'Edit: ${category.name}',
-                                      titleStyle: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      textConfirm: 'Save',
-                                      textCancel: 'Cancel',
-                                      content: Form(
-                                        key: _formKey,
-                                        child: Column(
-                                          children: [
-                                            CustomTextField(
-                                              label: 'Category name',
-                                              controller: nameController,
-                                              validator:
-                                                  (value) =>
-                                                      ValidationUtils.validateRequired(
-                                                        value,
-                                                        'Category',
-                                                      ),
-                                            ),
-                                            SizedBox(height: 16),
-                                            CustomTextField(
-                                              label: 'Description',
-                                              controller: descriptionController,
-                                              maxLines: 3,
-                                              validator:
-                                                  (value) =>
-                                                      ValidationUtils.validateRequired(
-                                                        value,
-                                                        'Description',
-                                                      ),
-                                            ),
-                                          ],
+      child: SafeArea(
+        child: Scaffold(
+          appBar: CustomAppBar(
+            title: Text('Category management'),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  Get.toNamed(AppRoutes.addCategory);
+                },
+                icon: Icon(
+                  Icons.add_outlined,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+            ],
+          ),
+          body: Obx(
+            () =>
+                _categoryController.isLoading.value
+                    ? Center(child: CircularProgressIndicator())
+                    : ListView.builder(
+                      itemCount: _categoryController.categories.length,
+                      itemBuilder: (context, index) {
+                        final category = _categoryController.categories[index];
+                        return CustomCard(
+                          child: ListTile(
+                            title: Text(category.name),
+                            subtitle: Text(category.description ?? ''),
+                            trailing: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Material(
+                                  elevation: 5,
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: IconButton(
+                                    onPressed: () {
+                                      final nameController =
+                                          TextEditingController(
+                                            text: category.name,
+                                          );
+                                      final descriptionController =
+                                          TextEditingController(
+                                            text: category.description,
+                                          );
+                                      Get.defaultDialog(
+                                        title: 'Edit: ${category.name}',
+                                        titleStyle: TextStyle(
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                      ),
-                                      onConfirm: () {
-                                        if (_formKey.currentState!.validate()) {
-                                          _categoryController.editCategory(
+                                        textConfirm: 'Save',
+                                        textCancel: 'Cancel',
+                                        content: Form(
+                                          key: _formKey,
+                                          child: Column(
+                                            children: [
+                                              CustomTextField(
+                                                label: 'Category name',
+                                                controller: nameController,
+                                                validator:
+                                                    (value) =>
+                                                        ValidationUtils.validateRequired(
+                                                          value,
+                                                          'Category',
+                                                        ),
+                                              ),
+                                              SizedBox(height: 16),
+                                              CustomTextField(
+                                                label: 'Description',
+                                                controller:
+                                                    descriptionController,
+                                                maxLines: 3,
+                                                validator:
+                                                    (value) =>
+                                                        ValidationUtils.validateRequired(
+                                                          value,
+                                                          'Description',
+                                                        ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        onConfirm: () {
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            _categoryController.editCategory(
+                                              category.id,
+                                              nameController.text,
+                                              descriptionController.text,
+                                              null,
+                                            );
+                                            Get.back();
+                                          }
+                                        },
+                                      );
+                                    },
+                                    icon: Icon(
+                                      Icons.edit,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 10),
+                                Material(
+                                  elevation: 5,
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: IconButton(
+                                    onPressed: () {
+                                      Get.defaultDialog(
+                                        title: 'Delete category',
+                                        middleText:
+                                            'Are you sure you want to delete this category?',
+                                        textConfirm: 'Delete',
+                                        textCancel: 'cancel',
+                                        onConfirm: () {
+                                          _categoryController.deleteCategory(
                                             category.id,
-                                            nameController.text,
-                                            descriptionController.text,
-                                            null,
                                           );
                                           Get.back();
-                                        }
-                                      },
-                                    );
-                                  },
-                                  icon: Icon(Icons.edit),
+                                        },
+                                      );
+                                    },
+                                    icon: Icon(
+                                      Icons.delete,
+                                      color:
+                                          Theme.of(context).colorScheme.error,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              SizedBox(width: 10),
-                              Material(
-                                elevation: 5,
-                                borderRadius: BorderRadius.circular(8),
-                                child: IconButton(
-                                  onPressed: () {
-                                    Get.defaultDialog(
-                                      title: 'Delete category',
-                                      middleText:
-                                          'Are you sure you want to delete this category?',
-                                      textConfirm: 'Delete',
-                                      textCancel: 'cancel',
-                                      onConfirm: () {
-                                        _categoryController.deleteCategory(
-                                          category.id,
-                                        );
-                                        Get.back();
-                                      },
-                                    );
-                                  },
-                                  icon: Icon(Icons.delete),
-                                ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
+                        );
+                      },
+                    ),
+          ),
         ),
       ),
     );

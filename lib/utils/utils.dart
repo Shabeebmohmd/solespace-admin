@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sole_space_admin/app/data/models/product_model.dart';
 
 String? validateEmail(String? value) {
   if (value == null || value.isEmpty) {
@@ -55,5 +56,35 @@ Widget buildButtonLoadingIndicator({
       strokeWidth: strokeWidth,
       valueColor: AlwaysStoppedAnimation<Color>(indicatorColor),
     ),
+  );
+}
+
+Widget buildIndicators(
+  ValueNotifier<int> currentIndexNotifier,
+  Product product,
+) {
+  return ValueListenableBuilder<int>(
+    valueListenable: currentIndexNotifier,
+    builder: (context, currentIndex, _) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children:
+            product.imageUrls.asMap().entries.map((entry) {
+              final index = entry.key;
+              return Container(
+                width: 8.0,
+                height: 8.0,
+                margin: EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color:
+                      currentIndex == index
+                          ? Theme.of(context).colorScheme.primary
+                          : Theme.of(context).colorScheme.onSurface,
+                ),
+              );
+            }).toList(),
+      );
+    },
   );
 }

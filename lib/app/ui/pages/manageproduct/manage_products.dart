@@ -33,13 +33,19 @@ class ManageProductsPage extends StatelessWidget {
             crossAxisCount: 2,
             crossAxisSpacing: 10,
             mainAxisSpacing: 10,
-            childAspectRatio: 0.4,
+            childAspectRatio: 0.5,
           ),
           itemCount: _productController.products.length,
           itemBuilder: (context, index) {
             final product = _productController.products[index];
             return InkWell(
               onTap: () {
+                Get.toNamed(
+                  AppRoutes.productDetails, // Replace with your route
+                  arguments: product,
+                );
+              },
+              onLongPress: () {
                 Get.defaultDialog(
                   content: Padding(
                     padding: const EdgeInsets.all(8.0),
