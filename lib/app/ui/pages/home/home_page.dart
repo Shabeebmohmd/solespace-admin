@@ -2,19 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sole_space_admin/app/constants/constants.dart';
 import 'package:sole_space_admin/app/controllers/auth_controller.dart';
+import 'package:sole_space_admin/app/controllers/theme_controller.dart';
 import 'package:sole_space_admin/app/core/widgets/custom_app_bar.dart';
 import 'package:sole_space_admin/app/core/widgets/custom_card.dart';
 import 'package:sole_space_admin/app/theme/app_color.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  final authController = Get.find<AuthController>();
+  final themeController = Get.find<ThemeController>();
+  HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final authController = Get.find<AuthController>();
-
     return Scaffold(
       appBar: CustomAppBar(
+        leading: Obx(
+          () =>
+              themeController.isDarkMode()
+                  ? IconButton(
+                    onPressed: () => themeController.toggleTheme(),
+                    icon: Icon(Icons.light_mode),
+                    color: Theme.of(context).colorScheme.onSurface,
+                  )
+                  : IconButton(
+                    onPressed: () => themeController.toggleTheme(),
+                    icon: Icon(Icons.dark_mode),
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+        ),
         showBackButton: false,
         title: Text('SoleSpace'),
         actions: [

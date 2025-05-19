@@ -34,7 +34,7 @@ class AppPages {
     GetPage(name: AppRoutes.addCategory, page: () => AddCategoryPage()),
 
     GetPage(name: AppRoutes.login, page: () => LoginPage()),
-    GetPage(name: AppRoutes.home, page: () => const HomePage()),
+    GetPage(name: AppRoutes.home, page: () => HomePage()),
     GetPage(name: AppRoutes.dashboard, page: () => const DashBoardPage()),
     GetPage(name: AppRoutes.manageOrders, page: () => const ManageOrdersPage()),
     GetPage(name: AppRoutes.manageUsers, page: () => const ManageUserPage()),

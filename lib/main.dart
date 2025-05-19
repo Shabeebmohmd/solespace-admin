@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sole_space_admin/app/controllers/theme_controller.dart';
 import 'package:sole_space_admin/app/routes/app_pages.dart';
 import 'package:sole_space_admin/app/routes/app_routes.dart';
 import 'package:sole_space_admin/app/theme/app_theme.dart';
@@ -23,13 +24,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final themeController = Get.find<ThemeController>();
     return GetMaterialApp(
       initialBinding: InitialBinding(),
       title: 'Sole Space Admin',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
-      themeMode: ThemeMode.light,
+      themeMode: ThemeMode.dark,
       initialRoute: AppRoutes.splash,
       getPages: AppPages.routes,
     );
