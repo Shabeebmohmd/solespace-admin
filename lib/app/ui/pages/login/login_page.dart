@@ -4,6 +4,7 @@ import 'package:sole_space_admin/app/controllers/auth_controller.dart';
 import 'package:sole_space_admin/app/core/widgets/custom_button.dart';
 import 'package:sole_space_admin/app/core/widgets/custom_text_field.dart';
 import 'package:sole_space_admin/app/core/widgets/dismissible_keyboard.dart';
+import 'package:sole_space_admin/utils/utils.dart';
 import 'package:sole_space_admin/utils/validate_utils.dart';
 
 class LoginPage extends StatelessWidget {
@@ -29,12 +30,18 @@ class LoginPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     _buildText(context),
-                    const SizedBox(height: 32),
+                    extraMediumSpacing,
                     _buildEmailField(),
-                    const SizedBox(height: 16),
-                    Obx(() => _buildPasswordField()),
-                    const SizedBox(height: 24),
-                    _buildLoginButton(),
+                    mediumSpacing,
+                    Obx(
+                      () => Column(
+                        children: [
+                          _buildPasswordField(),
+                          largeSpacing,
+                          _buildLoginButton(),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -95,7 +102,7 @@ class LoginPage extends StatelessWidget {
       'Admin Login',
       style: Theme.of(context).textTheme.headlineMedium?.copyWith(
         fontWeight: FontWeight.bold,
-        color: Colors.blueAccent,
+        // color: Colors.blueAccent,
       ),
       textAlign: TextAlign.center,
     );

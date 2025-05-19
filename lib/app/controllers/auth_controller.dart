@@ -33,7 +33,7 @@ class AuthController extends GetxController {
 
   Future<void> logIn(String email, String password) async {
     try {
-      // isLoading = true as RxBool;
+      isLoading.value = true;
       final user = await _authService.logIn(email, password);
       if (user != null) {
         if (user.email == 'shabeebmohmd47@gmail.com') {
@@ -45,6 +45,8 @@ class AuthController extends GetxController {
       }
     } catch (e) {
       log('e:$e');
+    } finally {
+      isLoading.value = false;
     }
   }
 

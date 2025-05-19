@@ -44,7 +44,7 @@ class AddProductPage extends StatelessWidget {
                       child: Column(
                         children: [
                           _informationText('Basic Information'),
-                          smallSpacing,
+                          mediumSpacing,
                           _buildNameField(),
                           mediumSpacing,
                           _buildBrandDropDown(),
@@ -52,6 +52,7 @@ class AddProductPage extends StatelessWidget {
                           _buildCategoryDropDown(),
                           mediumSpacing,
                           _informationText('Price Information'),
+                          mediumSpacing,
                           _buildPriceField(),
                           mediumSpacing,
                           _buildDiscountField(),
@@ -59,6 +60,7 @@ class AddProductPage extends StatelessWidget {
                           _buildStockField(),
                           mediumSpacing,
                           _informationText('Size and Color Information'),
+                          mediumSpacing,
                           _buildSizesField(),
                           mediumSpacing,
                           _buildColorsField(),
@@ -135,7 +137,10 @@ class AddProductPage extends StatelessWidget {
   }
 
   Align _informationText(String text) {
-    return Align(alignment: Alignment.centerLeft, child: Text(text));
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Text(text, style: TextStyle(fontWeight: FontWeight.bold)),
+    );
   }
 
   CustomButton _buildAddButton() {
