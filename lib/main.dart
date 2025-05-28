@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sole_space_admin/app/controllers/theme_controller.dart';
 import 'package:sole_space_admin/app/routes/app_pages.dart';
 import 'package:sole_space_admin/app/routes/app_routes.dart';
 import 'package:sole_space_admin/app/theme/app_theme.dart';
@@ -31,7 +30,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.light,
       initialRoute: AppRoutes.splash,
       getPages: AppPages.routes,
     );

@@ -8,11 +8,11 @@ import 'package:sole_space_admin/app/core/widgets/dismissible_keyboard.dart';
 import 'package:sole_space_admin/utils/utils.dart';
 import 'package:sole_space_admin/utils/validate_utils.dart';
 
+/// A page that allows users to add a new category with name and description.
 class AddCategoryPage extends StatelessWidget {
   AddCategoryPage({super.key});
+
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _descriptionController = TextEditingController();
   final _categoryController = Get.find<CategoryController>();
 
   @override
@@ -23,56 +23,105 @@ class AddCategoryPage extends StatelessWidget {
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  _categoryName(),
-                  mediumSpacing,
-                  _description(),
-                  extraMediumSpacing,
-                  _buildAddButton(),
-                ],
-              ),
+            child: CategoryForm(
+              formKey: _formKey,
+              controller: _categoryController,
             ),
           ),
         ),
       ),
     );
   }
+}
 
-  CustomTextField _description() {
+/// Form widget for adding a new category
+class CategoryForm extends StatelessWidget {
+  const CategoryForm({
+    super.key,
+    required this.formKey,
+    required this.controller,
+  });
+
+  final GlobalKey<FormState> formKey;
+  final CategoryController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: formKey,
+      child: Column(
+        children: [
+          CategoryNameField(controller: controller),
+          mediumSpacing,
+          CategoryDescriptionField(controller: controller),
+          extraMediumSpacing,
+          AddCategoryButton(formKey: formKey, controller: controller),
+        ],
+      ),
+    );
+  }
+}
+
+/// Widget for category name input field
+class CategoryNameField extends StatelessWidget {
+  const CategoryNameField({super.key, required this.controller});
+
+  final CategoryController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomTextField(
+      label: 'Category name',
+      controller: controller.nameController,
+      validator: (value) => ValidationUtils.validateRequired(value, 'Category'),
+    );
+  }
+}
+
+/// Widget for category description input field
+class CategoryDescriptionField extends StatelessWidget {
+  const CategoryDescriptionField({super.key, required this.controller});
+
+  final CategoryController controller;
+
+  @override
+  Widget build(BuildContext context) {
     return CustomTextField(
       label: 'Description',
-      controller: _descriptionController,
+      controller: controller.descriptionController,
       maxLines: 3,
       validator:
           (value) => ValidationUtils.validateRequired(value, 'Description'),
     );
   }
+}
 
-  CustomTextField _categoryName() {
-    return CustomTextField(
-      label: 'Category name',
-      controller: _nameController,
-      validator: (value) => ValidationUtils.validateRequired(value, 'Category'),
-    );
-  }
+/// Widget for the add category button
+class AddCategoryButton extends StatelessWidget {
+  const AddCategoryButton({
+    super.key,
+    required this.formKey,
+    required this.controller,
+  });
 
-  CustomButton _buildAddButton() {
+  final GlobalKey<FormState> formKey;
+  final CategoryController controller;
+
+  @override
+  Widget build(BuildContext context) {
     return CustomButton(
       text: 'Add category',
       onPressed: () {
-        if (_formKey.currentState!.validate()) {
-          _categoryController.addCategory(
-            _nameController.text,
-            _descriptionController.text,
+        if (formKey.currentState!.validate()) {
+          controller.addCategory(
+            controller.nameController.text,
+            controller.descriptionController.text,
             null,
           );
           Get.back();
         }
       },
-      isLoading: _categoryController.isLoading.value,
+      isLoading: controller.isLoading.value,
     );
   }
 }

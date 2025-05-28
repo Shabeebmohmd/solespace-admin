@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sole_space_admin/app/data/models/catogory_model.dart';
 import 'package:sole_space_admin/app/data/services/category_service.dart';
@@ -9,10 +10,21 @@ class CategoryController extends GetxController {
   final RxList<Category> categories = <Category>[].obs;
   final RxBool isLoading = false.obs;
 
+  // Text controllers for category form
+  final nameController = TextEditingController();
+  final descriptionController = TextEditingController();
+
   @override
   void onInit() {
     super.onInit();
     _loadCategories();
+  }
+
+  @override
+  void onClose() {
+    nameController.dispose();
+    descriptionController.dispose();
+    super.onClose();
   }
 
   void _loadCategories() {

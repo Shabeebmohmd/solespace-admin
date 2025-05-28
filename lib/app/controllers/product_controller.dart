@@ -3,11 +3,41 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sole_space_admin/app/data/models/product_model.dart';
 import 'package:sole_space_admin/app/data/services/cloudinary_service.dart';
 import 'package:sole_space_admin/app/data/services/product_service.dart';
+import 'package:flutter/material.dart';
 
 class ProductController extends GetxController {
   final ProductService _productService = ProductService();
   final CloudinaryService _cloudinaryService = CloudinaryService();
 
+  // Text Controllers for Add Product
+  final nameController = TextEditingController();
+  final descriptionController = TextEditingController();
+  final priceController = TextEditingController();
+  final stockController = TextEditingController();
+  final discountController = TextEditingController();
+  final sizesController = TextEditingController();
+  final colorsController = TextEditingController();
+
+  // Text Controllers for Edit Product
+  final editNameController = TextEditingController();
+  final editDescriptionController = TextEditingController();
+  final editPriceController = TextEditingController();
+  final editStockController = TextEditingController();
+  final editDiscountController = TextEditingController();
+  final editSizesController = TextEditingController();
+  final editColorsController = TextEditingController();
+
+  // Rx Variables
+  final selectedBrand = ''.obs;
+  final selectedCategory = ''.obs;
+  final selectedImages = <XFile>[].obs;
+  final editSelectedBrand = ''.obs;
+  final editSelectedCategory = ''.obs;
+  final editSelectedImages = <XFile>[].obs;
+  final existingImageUrls = <String>[].obs;
+  final newImageUrls = <String>[].obs;
+
+  // Observable Lists
   var products = <Product>[].obs;
   var brands = <Map<String, dynamic>>[].obs;
   var categories = <Map<String, dynamic>>[].obs;
@@ -19,6 +49,44 @@ class ProductController extends GetxController {
     fetchProducts();
     fetchBrands();
     fetchCategories();
+  }
+
+  @override
+  void onClose() {
+    // Dispose add product controllers
+    nameController.dispose();
+    descriptionController.dispose();
+    priceController.dispose();
+    stockController.dispose();
+    discountController.dispose();
+    sizesController.dispose();
+    colorsController.dispose();
+
+    // Dispose edit product controllers
+    editNameController.dispose();
+    editDescriptionController.dispose();
+    editPriceController.dispose();
+    editStockController.dispose();
+    editDiscountController.dispose();
+    editSizesController.dispose();
+    editColorsController.dispose();
+    super.onClose();
+  }
+
+  // Initialize edit controllers with product data
+  void initializeEditControllers(Product product) {
+    editNameController.text = product.name;
+    editDescriptionController.text = product.description;
+    editPriceController.text = product.price.toString();
+    editDiscountController.text = product.discountPrice?.toString() ?? '';
+    editSizesController.text = product.sizes.join(', ');
+    editColorsController.text = product.colors.join(', ');
+    editStockController.text = product.stockQuantity.toString();
+    editSelectedBrand.value = product.brandId;
+    editSelectedCategory.value = product.categoryId;
+    editSelectedImages.clear();
+    existingImageUrls.value = List.from(product.imageUrls);
+    newImageUrls.clear();
   }
 
   void fetchProducts() {
@@ -143,6 +211,78 @@ class ProductController extends GetxController {
       orElse: () => {'name': 'Unknown'},
     );
     return category['name'] as String;
+  }
+
+  // Upload images to Cloudinary
+  Future<List<String>> uploadProductsImages(List<XFile> images) async {
+    return await _cloudinaryService.uploadProductsImages(images);
+  }
+
+  // Remove an existing image
+  void removeExistingImage(String imageUrl) {
+    existingImageUrls.remove(imageUrl);
+  }
+
+  // Add a new image
+  void addNewImage(XFile image) {
+    editSelectedImages.add(image);
+  }
+
+  // Remove a new image
+  void removeNewImage(XFile image) {
+    editSelectedImages.remove(image);
+  }
+
+  // Get all images (existing + new)
+  List<String> getAllImages() {
+    return [...existingImageUrls, ...newImageUrls];
+  }
+
+  // Update product with new images
+  Future<void> updateProductWithImages(Product product) async {
+    try {
+      isLoading.value = true;
+
+      // Upload new images if any
+      if (editSelectedImages.isNotEmpty) {
+        newImageUrls.value = await uploadProductsImages(editSelectedImages);
+      }
+
+      // Create updated product with all images
+      final updatedProduct = Product(
+        id: product.id,
+        name: editNameController.text,
+        description: editDescriptionController.text,
+        brandId: editSelectedBrand.value,
+        categoryId: editSelectedCategory.value,
+        price: double.parse(editPriceController.text),
+        discountPrice:
+            editDiscountController.text.isEmpty
+                ? null
+                : double.parse(editDiscountController.text),
+        stockQuantity: int.parse(editStockController.text),
+        imageUrls: [...existingImageUrls, ...newImageUrls],
+        sizes:
+            editSizesController.text
+                .split(',')
+                .map((e) => e.trim())
+                .where((e) => e.isNotEmpty)
+                .toList(),
+        colors:
+            editColorsController.text
+                .split(',')
+                .map((e) => e.trim())
+                .where((e) => e.isNotEmpty)
+                .toList(),
+        isAvailable: product.isAvailable,
+        createdAt: product.createdAt,
+        updatedAt: DateTime.now(),
+      );
+
+      await updateProduct(updatedProduct);
+    } finally {
+      isLoading.value = false;
+    }
   }
 }
 

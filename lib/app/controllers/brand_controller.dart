@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sole_space_admin/app/data/models/brand_model.dart';
@@ -12,12 +13,22 @@ class BrandController extends GetxController {
   final RxList<Brand> brands = <Brand>[].obs;
   final RxBool isLoading = false.obs;
   final Rx<File?> selectedImage = Rx<File?>(null);
-  // final RxString logoUrl = ''.obs;
+
+  // Text controllers for brand form
+  final nameController = TextEditingController();
+  final descriptionController = TextEditingController();
 
   @override
   void onInit() {
     super.onInit();
     _loadBrands();
+  }
+
+  @override
+  void onClose() {
+    nameController.dispose();
+    descriptionController.dispose();
+    super.onClose();
   }
 
   void _loadBrands() {

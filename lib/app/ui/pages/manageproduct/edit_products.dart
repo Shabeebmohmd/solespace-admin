@@ -8,49 +8,22 @@ import 'package:sole_space_admin/app/core/widgets/custom_dropdown.dart';
 import 'package:sole_space_admin/app/core/widgets/custom_text_field.dart';
 import 'package:sole_space_admin/app/core/widgets/dismissible_keyboard.dart';
 import 'package:sole_space_admin/app/data/models/product_model.dart';
-import 'package:sole_space_admin/app/data/services/cloudinary_service.dart';
 import 'package:sole_space_admin/app/routes/app_routes.dart';
 import 'package:sole_space_admin/utils/utils.dart';
 import 'package:sole_space_admin/utils/validate_utils.dart';
+import 'dart:io';
 
 class EditProductsPage extends StatelessWidget {
   EditProductsPage({super.key});
 
-  final Product product = Get.arguments; // Product passed as argument
+  final Product product = Get.arguments;
   final _formKey = GlobalKey<FormState>();
-
-  // Controllers and observables
-  late final TextEditingController _nameController;
-  late final TextEditingController _descriptionController;
-  late final TextEditingController _priceController;
-  late final TextEditingController _stockController;
-  late final TextEditingController _dicountController;
-  late final TextEditingController _sizeController;
-  late final TextEditingController _colorController;
-  final RxString selectedBrand = ''.obs;
-  final RxString selectedCategory = ''.obs;
-  final RxList<XFile> selectedImages = <XFile>[].obs;
   final ProductController controller = Get.find<ProductController>();
-  final CloudinaryService _cloudinaryService = CloudinaryService();
 
   @override
   Widget build(BuildContext context) {
     // Initialize controllers with product data
-    _nameController = TextEditingController(text: product.name);
-    _descriptionController = TextEditingController(text: product.description);
-    _priceController = TextEditingController(text: product.price.toString());
-    _dicountController = TextEditingController(
-      text: product.discountPrice.toString(),
-    );
-    _sizeController = TextEditingController(text: product.sizes.join(', '));
-    _colorController = TextEditingController(text: product.colors.join(', '));
-    _stockController = TextEditingController(
-      text: product.stockQuantity.toString(),
-    );
-    selectedBrand.value = product.brandId;
-    selectedCategory.value = product.categoryId;
-    // Note: Existing images are handled as URLs, new images as XFile
-    // selectedImages will be populated only for new uploads
+    controller.initializeEditControllers(product);
 
     return DismissibleKeyboard(
       child: Scaffold(
@@ -62,33 +35,17 @@ class EditProductsPage extends StatelessWidget {
               key: _formKey,
               child: Column(
                 children: [
-                  _buildNameField(),
+                  _buildBasicInformation(),
                   mediumSpacing,
-                  _buildBrandDropDown(),
+                  _buildPriceInformation(),
                   mediumSpacing,
-                  _buildCategoryDropDown(),
-                  mediumSpacing,
-                  _buildPriceField(),
-                  mediumSpacing,
-                  _buildDiscountPrice(),
-                  mediumSpacing,
-                  _buildSizeField(),
-                  mediumSpacing,
-                  _buildColorField(),
-                  mediumSpacing,
-                  _buildStockField(),
+                  _buildSizeAndColorInformation(),
                   mediumSpacing,
                   _buildDescriptionField(),
                   mediumSpacing,
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [_buildImageButton(), _buildUpdateButton()],
-                  ),
+                  _buildActionButtons(),
                   mediumSpacing,
-                  Text('New Images Selected: ${selectedImages.length}'),
-                  mediumSpacing,
-                  _buildExistingImages(),
+                  _buildImageSections(),
                 ],
               ),
             ),
@@ -98,111 +55,197 @@ class EditProductsPage extends StatelessWidget {
     );
   }
 
-  CustomTextField _buildDiscountPrice() {
-    return CustomTextField(
-      controller: _dicountController,
-      label: 'Discount Price',
-      keyboardType: TextInputType.number,
-      validator:
-          (value) => ValidationUtils.validateNumber(
-            value,
-            'Discount Price',
-            allowDecimal: true,
-          ),
+  Widget _buildBasicInformation() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _informationText('Basic Information'),
+        mediumSpacing,
+        _buildNameField(),
+        mediumSpacing,
+        _buildBrandDropDown(),
+        mediumSpacing,
+        _buildCategoryDropDown(),
+      ],
     );
   }
 
-  CustomTextField _buildColorField() {
-    return CustomTextField(
-      controller: _colorController,
-      label: 'Colors (comma-separated, e.g., Red,Blue)',
-      validator: (value) => ValidationUtils.validateRequired(value, 'colors'),
+  Widget _buildPriceInformation() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _informationText('Price Information'),
+        mediumSpacing,
+        _buildPriceField(),
+        mediumSpacing,
+        _buildDiscountPrice(),
+        mediumSpacing,
+        _buildStockField(),
+      ],
     );
   }
 
-  CustomTextField _buildSizeField() {
-    return CustomTextField(
-      controller: _sizeController,
-      label: 'Sizes (comma-separated, e.g., 7,8,9)',
-      validator: (value) => ValidationUtils.validateRequired(value, 'sizes'),
+  Widget _buildSizeAndColorInformation() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _informationText('Size and Color Information'),
+        mediumSpacing,
+        _buildSizeField(),
+        mediumSpacing,
+        _buildColorField(),
+      ],
     );
   }
 
-  // Display existing Cloudinary images
+  Widget _buildActionButtons() {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [_buildImageButton(), _buildUpdateButton()],
+    );
+  }
+
+  Widget _buildImageSections() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [_buildExistingImages(), mediumSpacing, _buildNewImages()],
+    );
+  }
+
   Widget _buildExistingImages() {
-    return product.imageUrls.isNotEmpty
-        ? Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Existing Images:',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
+    return Obx(
+      () =>
+          controller.existingImageUrls.isNotEmpty
+              ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Existing Images:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 100,
+                    child: ListView.separated(
+                      separatorBuilder: (context, index) => SizedBox(width: 10),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: controller.existingImageUrls.length,
+                      itemBuilder: (context, index) {
+                        return Stack(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.network(
+                                  controller.existingImageUrls[index],
+                                  width: 80,
+                                  height: 80,
+                                  fit: BoxFit.cover,
+                                  errorBuilder:
+                                      (context, error, stackTrace) =>
+                                          const Icon(Icons.broken_image),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              top: 0,
+                              right: 0,
+                              child: IconButton(
+                                icon: const Icon(
+                                  Icons.remove_circle,
+                                  color: Colors.red,
+                                ),
+                                onPressed:
+                                    () => controller.removeExistingImage(
+                                      controller.existingImageUrls[index],
+                                    ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              )
+              : const Text('No existing images.'),
+    );
+  }
+
+  Widget _buildNewImages() {
+    return Obx(
+      () => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'New Images:',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text('Selected: ${controller.editSelectedImages.length}'),
+            ],
+          ),
+          if (controller.editSelectedImages.isNotEmpty)
             SizedBox(
               height: 100,
               child: ListView.separated(
                 separatorBuilder: (context, index) => SizedBox(width: 10),
                 scrollDirection: Axis.horizontal,
-                itemCount: product.imageUrls.length,
+                itemCount: controller.editSelectedImages.length,
                 itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.network(
-                        product.imageUrls[index],
-                        width: 80,
-                        height: 80,
-                        fit: BoxFit.cover,
-                        errorBuilder:
-                            (context, error, stackTrace) =>
-                                const Icon(Icons.broken_image),
+                  return Stack(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.file(
+                            File(controller.editSelectedImages[index].path),
+                            width: 80,
+                            height: 80,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
-                    ),
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.remove_circle,
+                            color: Colors.red,
+                          ),
+                          onPressed:
+                              () => controller.removeNewImage(
+                                controller.editSelectedImages[index],
+                              ),
+                        ),
+                      ),
+                    ],
                   );
                 },
               ),
             ),
-          ],
-        )
-        : const Text('No existing images.');
+        ],
+      ),
+    );
   }
 
-  // Update button to save changes
+  Align _informationText(String text) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Text(text, style: TextStyle(fontWeight: FontWeight.bold)),
+    );
+  }
+
   CustomButton _buildUpdateButton() {
     return CustomButton(
       onPressed: () async {
         if (_formKey.currentState!.validate()) {
-          // Upload new images to Cloudinary, if any
-          List<String> newImageUrls = product.imageUrls;
-          if (selectedImages.isNotEmpty) {
-            newImageUrls = await _cloudinaryService.uploadProductsImages(
-              selectedImages,
-            );
-            newImageUrls.addAll(product.imageUrls); // Keep existing images
-          }
-
-          // Create updated product
-          final updatedProduct = Product(
-            id: product.id,
-            name: _nameController.text,
-            description: _descriptionController.text,
-            brandId: selectedBrand.value,
-            categoryId: selectedCategory.value,
-            price: double.parse(_priceController.text),
-            discountPrice: product.discountPrice,
-            stockQuantity: int.parse(_stockController.text),
-            imageUrls: newImageUrls,
-            sizes: product.sizes,
-            colors: product.colors,
-            isAvailable: product.isAvailable,
-            createdAt: product.createdAt,
-            updatedAt: DateTime.now(),
-          );
-
-          // Update in Firebase
-          await controller.updateProduct(updatedProduct);
-          // Navigate back after update
+          await controller.updateProductWithImages(product);
           Get.offNamed(AppRoutes.manageProducts);
         }
       },
@@ -212,22 +255,24 @@ class EditProductsPage extends StatelessWidget {
     );
   }
 
-  // Image picker button
   CustomButton _buildImageButton() {
     return CustomButton(
       onPressed: () async {
         final images = await ImagePicker().pickMultiImage();
-        selectedImages.value = images;
+        if (images != null) {
+          for (var image in images) {
+            controller.addNewImage(image);
+          }
+        }
       },
       text: 'Pick New Images',
       isFullWidth: false,
     );
   }
 
-  // Stock quantity field
   CustomTextField _buildStockField() {
     return CustomTextField(
-      controller: _stockController,
+      controller: controller.editStockController,
       label: 'Stock Quantity',
       keyboardType: TextInputType.number,
       validator:
@@ -235,10 +280,9 @@ class EditProductsPage extends StatelessWidget {
     );
   }
 
-  // Price field
   CustomTextField _buildPriceField() {
     return CustomTextField(
-      controller: _priceController,
+      controller: controller.editPriceController,
       label: 'Price',
       keyboardType: TextInputType.number,
       validator:
@@ -250,32 +294,35 @@ class EditProductsPage extends StatelessWidget {
     );
   }
 
-  // Category dropdown
   CustomDropdown _buildCategoryDropDown() {
     return CustomDropdown(
-      value: selectedCategory.value.isEmpty ? null : selectedCategory.value,
+      value:
+          controller.editSelectedCategory.value.isEmpty
+              ? null
+              : controller.editSelectedCategory.value,
       hintText: 'Select Category',
       items: controller.categories,
-      onChanged: (value) => selectedCategory.value = value!,
+      onChanged: (value) => controller.editSelectedCategory.value = value!,
       validator: (value) => ValidationUtils.validateDropdown(value, 'category'),
     );
   }
 
-  // Brand dropdown
   CustomDropdown _buildBrandDropDown() {
     return CustomDropdown(
-      value: selectedBrand.value.isEmpty ? null : selectedBrand.value,
+      value:
+          controller.editSelectedBrand.value.isEmpty
+              ? null
+              : controller.editSelectedBrand.value,
       hintText: 'Select Brand',
       items: controller.brands,
-      onChanged: (value) => selectedBrand.value = value!,
+      onChanged: (value) => controller.editSelectedBrand.value = value!,
       validator: (value) => ValidationUtils.validateDropdown(value, 'brand'),
     );
   }
 
-  // Description field
   CustomTextField _buildDescriptionField() {
     return CustomTextField(
-      controller: _descriptionController,
+      controller: controller.editDescriptionController,
       label: 'Description',
       maxLines: 3,
       validator:
@@ -283,13 +330,42 @@ class EditProductsPage extends StatelessWidget {
     );
   }
 
-  // Name field
   CustomTextField _buildNameField() {
     return CustomTextField(
-      controller: _nameController,
+      controller: controller.editNameController,
       label: 'Product Name',
       validator:
           (value) => ValidationUtils.validateRequired(value, 'product name'),
+    );
+  }
+
+  CustomTextField _buildSizeField() {
+    return CustomTextField(
+      controller: controller.editSizesController,
+      label: 'Sizes (comma-separated, e.g., 7,8,9)',
+      validator: (value) => ValidationUtils.validateRequired(value, 'sizes'),
+    );
+  }
+
+  CustomTextField _buildColorField() {
+    return CustomTextField(
+      controller: controller.editColorsController,
+      label: 'Colors (comma-separated, e.g., Red,Blue)',
+      validator: (value) => ValidationUtils.validateRequired(value, 'colors'),
+    );
+  }
+
+  CustomTextField _buildDiscountPrice() {
+    return CustomTextField(
+      controller: controller.editDiscountController,
+      label: 'Discount Price',
+      keyboardType: TextInputType.number,
+      validator:
+          (value) => ValidationUtils.validateNumber(
+            value,
+            'Discount Price',
+            allowDecimal: true,
+          ),
     );
   }
 }
