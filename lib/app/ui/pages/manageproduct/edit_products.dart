@@ -259,10 +259,8 @@ class EditProductsPage extends StatelessWidget {
     return CustomButton(
       onPressed: () async {
         final images = await ImagePicker().pickMultiImage();
-        if (images != null) {
-          for (var image in images) {
-            controller.addNewImage(image);
-          }
+        for (var image in images) {
+          controller.addNewImage(image);
         }
       },
       text: 'Pick New Images',

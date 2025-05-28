@@ -20,6 +20,8 @@ class AddProductPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Refresh brands and categories when page is built
+
     return DismissibleKeyboard(
       child: Scaffold(
         appBar: CustomAppBar(title: Text('Add Product')),

@@ -3,21 +3,6 @@ import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CloudinaryService {
-  // Future<dynamic> uploadImage(File? logo) async {
-  //   final url = Uri.parse('https://api.cloudinary.com/v1_1/diwbhb6vd/upload');
-  //   final request =
-  //       http.MultipartRequest('POST', url)
-  //         ..fields['upload_preset'] = 'preset-for-upload'
-  //         ..files.add(await http.MultipartFile.fromPath('file', logo!.path));
-  //   final response = await request.send();
-  //   if (response.statusCode == 200) {
-  //     final responseData = await response.stream.toBytes();
-  //     final responseString = String.fromCharCodes(responseData);
-  //     final jsonMap = jsonDecode(responseString);
-  //     final logoUrl = jsonMap['url'];
-  //     return logoUrl;
-  //   }
-  // }
   final CloudinaryPublic _cloudinary = CloudinaryPublic(
     'diwbhb6vd',
     'preset-for-upload',

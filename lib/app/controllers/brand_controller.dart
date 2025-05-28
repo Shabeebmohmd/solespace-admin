@@ -72,34 +72,6 @@ class BrandController extends GetxController {
     }
   }
 
-  // Future<void> addBrand(String name, String? description, File? logo) async {
-  //   try {
-  //     isLoading.value = true;
-  //     if (logo != null) {
-  //       String? logoUrl = await _cloudinaryService.uploadImage(logo);
-  //     }
-  //     final brand = Brand(
-  //       id: DateTime.now().millisecondsSinceEpoch.toString(),
-  //       name: name,
-  //       description: description,
-  //       logoImage: logoUrl,
-  //       createdAt: DateTime.now(),
-  //     );
-  //     await _brandService.addBrand(brand);
-  //     // final uploadResult = await _cloudinaryService.uploadImage(logo);
-  //     // if (uploadResult is String) {
-  //     //   logoUrl.value = uploadResult;
-  //     // } else {
-  //     //   throw Exception('Failed to upload image');
-  //     // }
-  //     Get.snackbar('Success', 'Brand added successfully');
-  //   } catch (e) {
-  //     Get.snackbar('Error', 'Failed to add brand');
-  //   } finally {
-  //     isLoading.value = false;
-  //   }
-  // }
-
   Future<void> editBrand(
     String id,
     String name,
@@ -130,7 +102,7 @@ class BrandController extends GetxController {
 
       // Update the brand in the database
       await _brandService.updateBrand(brand);
-
+      _brandService.getBrands();
       Get.snackbar('Success', 'Brand updated successfully');
     } catch (e) {
       Get.snackbar('Error', 'Failed to update brand: $e');
@@ -138,27 +110,6 @@ class BrandController extends GetxController {
       isLoading.value = false;
     }
   }
-  // Future<void> editBrand(
-  //   String id,
-  //   String name,
-  //   String? description,
-  //   File? logo,
-  // ) async {
-  //   try {
-  //     // isLoading.value = true;
-  //     final brand = Brand(
-  //       id: id,
-  //       name: name,
-  //       description: description,
-  //       logoImage: logo,
-  //       createdAt: DateTime.now(),
-  //     );
-  //     await _brandService.updateBrand(brand);
-  //     Get.snackbar('Success', 'Updated successfully');
-  //   } catch (e) {
-  //     Get.snackbar('Error', 'Failed to update brand');
-  //   }
-  // }
 
   Future<void> pickImage() async {
     final picker = ImagePicker();

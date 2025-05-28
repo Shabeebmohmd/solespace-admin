@@ -8,7 +8,6 @@ import 'package:sole_space_admin/app/core/widgets/dismissible_keyboard.dart';
 import 'package:sole_space_admin/utils/utils.dart';
 import 'package:sole_space_admin/utils/validate_utils.dart';
 
-/// A page that allows users to add a new category with name and description.
 class AddCategoryPage extends StatelessWidget {
   AddCategoryPage({super.key});
 

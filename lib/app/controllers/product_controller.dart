@@ -160,8 +160,9 @@ class ProductController extends GetxController {
       );
 
       await _productService.addProduct(product);
-      // products.add(product);
       Get.snackbar('Success', 'Product added successfully');
+      // Refresh products list after adding
+      fetchProducts();
     } catch (e) {
       Get.snackbar('Error', 'Failed to add product: $e');
     } finally {
@@ -177,6 +178,8 @@ class ProductController extends GetxController {
       final index = products.indexWhere((p) => p.id == product.id);
       if (index != -1) products[index] = product;
       Get.snackbar('Success', 'Product updated successfully');
+      // Refresh products list after updating
+      fetchProducts();
     } catch (e) {
       Get.snackbar('Error', 'Failed to update product: $e');
     } finally {
@@ -190,6 +193,8 @@ class ProductController extends GetxController {
       await _productService.deleteProduct(productId);
       products.removeWhere((p) => p.id == productId);
       Get.snackbar('Success', 'Product deleted successfully');
+      // Refresh products list after deleting
+      fetchProducts();
     } catch (e) {
       Get.snackbar('Error', 'Failed to delete product: $e');
     } finally {
@@ -283,6 +288,11 @@ class ProductController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  // Method to refresh brands and categories
+  Future<void> refreshBrandsAndCategories() async {
+    await Future.wait([fetchBrands(), fetchCategories()]);
   }
 }
 

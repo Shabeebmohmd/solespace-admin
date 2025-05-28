@@ -14,6 +14,7 @@ class ManageProductsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _productController.refreshBrandsAndCategories();
     return Scaffold(
       appBar: CustomAppBar(title: Text('Manage products')),
       floatingActionButton: FloatingActionButton.extended(
@@ -219,10 +220,7 @@ class ManageProductsPage extends StatelessWidget {
       title: Text('Edit'),
       onTap: () {
         Get.back();
-        Get.toNamed(
-          AppRoutes.editProducts,
-          arguments: product,
-        ); // Close the dialog
+        Get.toNamed(AppRoutes.editProducts, arguments: product);
       },
     );
   }
