@@ -78,8 +78,10 @@ class OrderController extends GetxController {
   }
 
   void filterByStatus(String status) {
-    selectedStatus.value = status;
-    fetchOrders();
+    if (selectedStatus.value != status) {
+      selectedStatus.value = status;
+      fetchOrders();
+    }
   }
 
   String getStatusColor(String status) {

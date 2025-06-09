@@ -42,17 +42,19 @@ class ManageOrdersPage extends StatelessWidget {
   Widget _buildStatusFilter(OrderController controller) {
     return Container(
       padding: const EdgeInsets.all(16),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            _buildFilterChip(controller, 'All', 'all'),
-            _buildFilterChip(controller, 'Pending', 'pending'),
-            _buildFilterChip(controller, 'Processing', 'processing'),
-            _buildFilterChip(controller, 'Shipped', 'shipped'),
-            _buildFilterChip(controller, 'Delivered', 'delivered'),
-            _buildFilterChip(controller, 'Cancelled', 'cancelled'),
-          ],
+      child: Obx(
+        () => SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              _buildFilterChip(controller, 'All', 'all'),
+              _buildFilterChip(controller, 'Pending', 'pending'),
+              _buildFilterChip(controller, 'Processing', 'processing'),
+              _buildFilterChip(controller, 'Shipped', 'shipped'),
+              _buildFilterChip(controller, 'Delivered', 'delivered'),
+              _buildFilterChip(controller, 'Cancelled', 'cancelled'),
+            ],
+          ),
         ),
       ),
     );
@@ -69,9 +71,7 @@ class ManageOrdersPage extends StatelessWidget {
         label: Text(label),
         selected: controller.selectedStatus.value == value,
         onSelected: (selected) {
-          if (selected) {
-            controller.filterByStatus(value);
-          }
+          controller.filterByStatus(value);
         },
       ),
     );
