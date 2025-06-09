@@ -23,11 +23,6 @@ final menuItems = [
     'title': 'Manage Orders',
     'route': AppRoutes.manageOrders,
   },
-  {
-    'icon': Icons.people,
-    'title': 'Manage Users',
-    'route': AppRoutes.manageUsers,
-  },
 ];
 
 // First, define your gradients list outside build method or at class level
@@ -57,9 +52,9 @@ final List<Gradient> cardGradients = [
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   ),
-  const LinearGradient(
-    colors: [Color(0xFF36D1DC), Color(0xFF5B86E5)],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-  ),
+  // const LinearGradient(
+  //   colors: [Color(0xFF36D1DC), Color(0xFF5B86E5)],
+  //   begin: Alignment.topLeft,
+  //   end: Alignment.bottomRight,
+  // ),
 ];

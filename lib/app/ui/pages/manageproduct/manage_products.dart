@@ -8,13 +8,24 @@ import 'package:sole_space_admin/app/data/models/product_model.dart';
 import 'package:sole_space_admin/app/routes/app_routes.dart';
 import 'package:sole_space_admin/utils/utils.dart';
 
-class ManageProductsPage extends StatelessWidget {
-  ManageProductsPage({super.key});
+class ManageProductsPage extends StatefulWidget {
+  const ManageProductsPage({super.key});
+
+  @override
+  State<ManageProductsPage> createState() => _ManageProductsPageState();
+}
+
+class _ManageProductsPageState extends State<ManageProductsPage> {
   final _productController = Get.find<ProductController>();
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     _productController.refreshBrandsAndCategories();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: Text('Manage products')),
       floatingActionButton: FloatingActionButton.extended(
@@ -41,10 +52,7 @@ class ManageProductsPage extends StatelessWidget {
             final product = _productController.products[index];
             return InkWell(
               onTap: () {
-                Get.toNamed(
-                  AppRoutes.productDetails, // Replace with your route
-                  arguments: product,
-                );
+                Get.toNamed(AppRoutes.productDetails, arguments: product);
               },
               onLongPress: () {
                 Get.defaultDialog(

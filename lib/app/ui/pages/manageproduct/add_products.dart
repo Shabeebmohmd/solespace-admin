@@ -20,8 +20,6 @@ class AddProductPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Refresh brands and categories when page is built
-
     return DismissibleKeyboard(
       child: Scaffold(
         appBar: CustomAppBar(title: Text('Add Product')),
@@ -94,8 +92,8 @@ class AddProductPage extends StatelessWidget {
         _informationText('Size and Color Information'),
         mediumSpacing,
         _buildSizesField(),
-        mediumSpacing,
-        _buildColorsField(),
+        // mediumSpacing,
+        // _buildColorsField(),
       ],
     );
   }
@@ -167,12 +165,12 @@ class AddProductPage extends StatelessWidget {
                   .map((e) => e.trim())
                   .where((e) => e.isNotEmpty)
                   .toList();
-          List<String> colors =
-              controller.colorsController.text
-                  .split(',')
-                  .map((e) => e.trim())
-                  .where((e) => e.isNotEmpty)
-                  .toList();
+          // List<String> colors =
+          //     controller.colorsController.text
+          //         .split(',')
+          //         .map((e) => e.trim())
+          //         .where((e) => e.isNotEmpty)
+          //         .toList();
 
           controller.addProduct(
             name: controller.nameController.text,
@@ -187,7 +185,7 @@ class AddProductPage extends StatelessWidget {
             stockQuantity: int.parse(controller.stockController.text),
             images: controller.selectedImages,
             sizes: sizes,
-            colors: colors,
+            // colors: colors,
             isAvailable: true,
           );
           Get.back();
@@ -286,13 +284,13 @@ class AddProductPage extends StatelessWidget {
     );
   }
 
-  CustomTextField _buildColorsField() {
-    return CustomTextField(
-      controller: controller.colorsController,
-      label: 'Colors (comma-separated, e.g., Red,Blue)',
-      validator: (value) => ValidationUtils.validateRequired(value, 'colors'),
-    );
-  }
+  // CustomTextField _buildColorsField() {
+  //   return CustomTextField(
+  //     controller: controller.colorsController,
+  //     label: 'Colors (comma-separated, e.g., Red,Blue)',
+  //     validator: (value) => ValidationUtils.validateRequired(value, 'colors'),
+  //   );
+  // }
 
   CustomTextField _buildDiscountField() {
     return CustomTextField(

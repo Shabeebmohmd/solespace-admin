@@ -50,35 +50,33 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView.separated(
-        itemCount: 6,
-        separatorBuilder: (context, index) => SizedBox(height: 40),
-        padding: const EdgeInsets.all(16),
-        itemBuilder: (BuildContext context, int index) {
-          return CustomCard(
-            onTap: () => Get.toNamed(menuItems[index]['route'] as String),
-            gradient: cardGradients[index],
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Icon(menuItems[index]['icon'] as IconData, size: 60),
-                    const SizedBox(width: 12),
-                    Text(
-                      menuItems[index]['title'] as String,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.white,
-                      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 32),
+        child: ListView.separated(
+          itemCount: 5,
+          separatorBuilder: (context, index) => SizedBox(height: 40),
+          padding: const EdgeInsets.all(16),
+          itemBuilder: (BuildContext context, int index) {
+            return CustomCard(
+              onTap: () => Get.toNamed(menuItems[index]['route'] as String),
+              gradient: cardGradients[index],
+              child: Row(
+                children: [
+                  Icon(menuItems[index]['icon'] as IconData, size: 60),
+                  const SizedBox(width: 12),
+                  Text(
+                    menuItems[index]['title'] as String,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.white,
                     ),
-                  ],
-                ),
-              ],
-            ),
-          );
-        },
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

@@ -10,7 +10,6 @@ import 'package:sole_space_admin/app/ui/pages/manageorders/manage_orders.dart';
 import 'package:sole_space_admin/app/ui/pages/manageproduct/edit_products.dart';
 import 'package:sole_space_admin/app/ui/pages/manageproduct/manage_products.dart';
 import 'package:sole_space_admin/app/ui/pages/manageproduct/product_details.dart';
-import 'package:sole_space_admin/app/ui/pages/manageuser/manage_user.dart';
 import 'package:sole_space_admin/app/ui/pages/splash/splash_page.dart';
 import 'package:sole_space_admin/app/ui/pages/login/login_page.dart';
 import 'package:sole_space_admin/app/ui/pages/home/home_page.dart';
@@ -37,6 +36,5 @@ class AppPages {
     GetPage(name: AppRoutes.home, page: () => HomePage()),
     GetPage(name: AppRoutes.dashboard, page: () => const DashBoardPage()),
     GetPage(name: AppRoutes.manageOrders, page: () => const ManageOrdersPage()),
-    GetPage(name: AppRoutes.manageUsers, page: () => const ManageUserPage()),
   ];
 }

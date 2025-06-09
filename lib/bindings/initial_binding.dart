@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:sole_space_admin/app/controllers/auth_controller.dart';
 import 'package:sole_space_admin/app/controllers/brand_controller.dart';
 import 'package:sole_space_admin/app/controllers/category_controller.dart';
+import 'package:sole_space_admin/app/controllers/order_controller.dart';
 import 'package:sole_space_admin/app/controllers/product_controller.dart';
 import 'package:sole_space_admin/app/controllers/theme_controller.dart';
 
@@ -13,5 +14,6 @@ class InitialBinding extends Bindings {
     Get.put(BrandController());
     Get.put(CategoryController());
     Get.put(ProductController());
+    Get.put(OrderController());
   }
 }

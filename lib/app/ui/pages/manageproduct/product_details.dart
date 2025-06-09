@@ -41,10 +41,6 @@ class ProductDetailsPage extends StatelessWidget {
                   // mediumSpacing,
                   Divider(),
                   _buildSizes(context),
-                  mediumSpacing,
-                  _colorText(),
-                  mediumSpacing,
-                  _buildColors(context),
                 ],
               ),
             ),
@@ -54,30 +50,30 @@ class ProductDetailsPage extends StatelessWidget {
     );
   }
 
-  Wrap _buildColors(BuildContext context) {
-    return Wrap(
-      spacing: 8.0,
-      runSpacing: 4.0,
-      children:
-          product.colors
-              .map(
-                (color) => Chip(
-                  label: Text(color),
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  backgroundColor:
-                      Theme.of(context).colorScheme.tertiaryFixedDim,
-                ),
-              )
-              .toList(),
-    );
-  }
+  // Wrap _buildColors(BuildContext context) {
+  //   return Wrap(
+  //     spacing: 8.0,
+  //     runSpacing: 4.0,
+  //     children:
+  //         product.colors
+  //             .map(
+  //               (color) => Chip(
+  //                 label: Text(color),
+  //                 padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+  //                 backgroundColor:
+  //                     Theme.of(context).colorScheme.tertiaryFixedDim,
+  //               ),
+  //             )
+  //             .toList(),
+  //   );
+  // }
 
-  Text _colorText() {
-    return Text(
-      'Available Colors:',
-      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-    );
-  }
+  // Text _colorText() {
+  //   return Text(
+  //     'Available Colors:',
+  //     style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+  //   );
+  // }
 
   Wrap _buildSizes(BuildContext context) {
     return Wrap(

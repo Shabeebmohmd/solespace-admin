@@ -92,8 +92,8 @@ class EditProductsPage extends StatelessWidget {
         _informationText('Size and Color Information'),
         mediumSpacing,
         _buildSizeField(),
-        mediumSpacing,
-        _buildColorField(),
+        // mediumSpacing,
+        // _buildColorField(),
       ],
     );
   }
@@ -345,13 +345,13 @@ class EditProductsPage extends StatelessWidget {
     );
   }
 
-  CustomTextField _buildColorField() {
-    return CustomTextField(
-      controller: controller.editColorsController,
-      label: 'Colors (comma-separated, e.g., Red,Blue)',
-      validator: (value) => ValidationUtils.validateRequired(value, 'colors'),
-    );
-  }
+  // CustomTextField _buildColorField() {
+  //   return CustomTextField(
+  //     controller: controller.editColorsController,
+  //     label: 'Colors (comma-separated, e.g., Red,Blue)',
+  //     validator: (value) => ValidationUtils.validateRequired(value, 'colors'),
+  //   );
+  // }
 
   CustomTextField _buildDiscountPrice() {
     return CustomTextField(
