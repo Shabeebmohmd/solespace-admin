@@ -16,4 +16,8 @@ class AppRoutes {
 
   static const String manageOrders = '/manage-orders';
   static const String manageUsers = '/manage-users';
+
+  // Legal pages
+  static const String privacyPolicy = '/privacy-policy';
+  static const String termsAndConditions = '/terms-and-conditions';
 }

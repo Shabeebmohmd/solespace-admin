@@ -11,6 +11,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double elevation;
   final bool centerTitle;
   final double borderRadius;
+  final IconThemeData? iconTheme;
 
   const CustomAppBar({
     super.key,
@@ -24,6 +25,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.elevation = 0,
     this.centerTitle = true,
     this.borderRadius = 16,
+    this.iconTheme,
   });
 
   @override
@@ -37,6 +39,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: backgroundColor ?? colorScheme.surface,
       foregroundColor: foregroundColor ?? colorScheme.onSurface,
       elevation: elevation,
+      iconTheme: iconTheme ?? IconThemeData(color: colorScheme.onSurface),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           bottom: Radius.circular(borderRadius), // Adjust the radius as needed

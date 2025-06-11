@@ -13,6 +13,8 @@ import 'package:sole_space_admin/app/ui/pages/manageproduct/product_details.dart
 import 'package:sole_space_admin/app/ui/pages/splash/splash_page.dart';
 import 'package:sole_space_admin/app/ui/pages/login/login_page.dart';
 import 'package:sole_space_admin/app/ui/pages/home/home_page.dart';
+import 'package:sole_space_admin/app/ui/pages/legal/privacy_policy_page.dart';
+import 'package:sole_space_admin/app/ui/pages/legal/terms_and_conditions_page.dart';
 import 'package:sole_space_admin/bindings/initial_binding.dart';
 
 class AppPages {
@@ -36,5 +38,15 @@ class AppPages {
     GetPage(name: AppRoutes.home, page: () => HomePage()),
     GetPage(name: AppRoutes.dashboard, page: () => const DashBoardPage()),
     GetPage(name: AppRoutes.manageOrders, page: () => const ManageOrdersPage()),
+
+    // Legal pages
+    GetPage(
+      name: AppRoutes.privacyPolicy,
+      page: () => const PrivacyPolicyPage(),
+    ),
+    GetPage(
+      name: AppRoutes.termsAndConditions,
+      page: () => const TermsAndConditionsPage(),
+    ),
   ];
 }
