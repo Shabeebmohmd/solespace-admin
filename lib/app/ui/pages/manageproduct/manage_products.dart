@@ -39,36 +39,49 @@ class _ManageProductsPageState extends State<ManageProductsPage> {
         if (_productController.products.isEmpty) {
           return const Center(child: Text('No products available.'));
         }
-        return GridView.builder(
-          padding: const EdgeInsets.all(16),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            childAspectRatio: 0.5,
-          ),
-          itemCount: _productController.products.length,
-          itemBuilder: (context, index) {
-            final product = _productController.products[index];
-            return InkWell(
-              onTap: () {
-                Get.toNamed(AppRoutes.productDetails, arguments: product);
-              },
-              onLongPress: () {
-                Get.defaultDialog(
-                  content: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        _buildEdit(product),
-                        Divider(),
-                        _buildDelete(product),
-                      ],
-                    ),
-                  ),
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            int crossAxisCount = 2;
+            double width = constraints.maxWidth;
+            if (width >= 1200) {
+              crossAxisCount = 5;
+            } else if (width >= 900) {
+              crossAxisCount = 4;
+            } else if (width >= 600) {
+              crossAxisCount = 3;
+            }
+            return GridView.builder(
+              padding: const EdgeInsets.all(16),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: crossAxisCount,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                childAspectRatio: 0.5,
+              ),
+              itemCount: _productController.products.length,
+              itemBuilder: (context, index) {
+                final product = _productController.products[index];
+                return InkWell(
+                  onTap: () {
+                    Get.toNamed(AppRoutes.productDetails, arguments: product);
+                  },
+                  onLongPress: () {
+                    Get.defaultDialog(
+                      content: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            _buildEdit(product),
+                            Divider(),
+                            _buildDelete(product),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  child: _buildCard(context, product),
                 );
               },
-              child: _buildCard(context, product),
             );
           },
         );

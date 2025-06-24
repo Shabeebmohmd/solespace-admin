@@ -31,23 +31,32 @@ class EditProductsPage extends StatelessWidget {
         body: Obx(
           () => SingleChildScrollView(
             padding: const EdgeInsets.all(16),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  _buildBasicInformation(),
-                  mediumSpacing,
-                  _buildPriceInformation(),
-                  mediumSpacing,
-                  _buildSizeAndColorInformation(),
-                  mediumSpacing,
-                  _buildDescriptionField(),
-                  mediumSpacing,
-                  _buildActionButtons(),
-                  mediumSpacing,
-                  _buildImageSections(),
-                ],
-              ),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                double maxWidth =
+                    constraints.maxWidth > 600 ? 400 : double.infinity;
+                return SizedBox(
+                  width: maxWidth,
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        _buildBasicInformation(),
+                        mediumSpacing,
+                        _buildPriceInformation(),
+                        mediumSpacing,
+                        _buildSizeAndColorInformation(),
+                        mediumSpacing,
+                        _buildDescriptionField(),
+                        mediumSpacing,
+                        _buildActionButtons(),
+                        mediumSpacing,
+                        _buildImageSections(),
+                      ],
+                    ),
+                  ),
+                );
+              },
             ),
           ),
         ),

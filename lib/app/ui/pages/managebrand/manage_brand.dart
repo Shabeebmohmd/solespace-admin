@@ -37,21 +37,34 @@ class ManageBrandPage extends StatelessWidget {
       () =>
           _brandController.isLoading.value
               ? Center(child: CircularProgressIndicator())
-              : GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                  childAspectRatio: 1.0,
-                ),
-                padding: const EdgeInsets.all(16),
-                itemCount: _brandController.brands.length,
-                itemBuilder: (context, index) {
-                  final brand = _brandController.brands[index];
-                  return BrandGridItem(
-                    brand: brand,
-                    formKey: _formKey,
-                    controller: _brandController,
+              : LayoutBuilder(
+                builder: (context, constraints) {
+                  int crossAxisCount = 2;
+                  double width = constraints.maxWidth;
+                  if (width >= 1200) {
+                    crossAxisCount = 5;
+                  } else if (width >= 900) {
+                    crossAxisCount = 4;
+                  } else if (width >= 600) {
+                    crossAxisCount = 3;
+                  }
+                  return GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: crossAxisCount,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                      childAspectRatio: 1.0,
+                    ),
+                    padding: const EdgeInsets.all(16),
+                    itemCount: _brandController.brands.length,
+                    itemBuilder: (context, index) {
+                      final brand = _brandController.brands[index];
+                      return BrandGridItem(
+                        brand: brand,
+                        formKey: _formKey,
+                        controller: _brandController,
+                      );
+                    },
                   );
                 },
               ),

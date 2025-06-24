@@ -23,27 +23,37 @@ class LoginPage extends StatelessWidget {
           child: Center(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(24.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _buildText(context),
-                    extraMediumSpacing,
-                    _buildEmailField(),
-                    mediumSpacing,
-                    Obx(
-                      () => Column(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  // For web, center the form and restrict its max width
+                  double maxWidth =
+                      constraints.maxWidth > 600 ? 400 : double.infinity;
+                  return SizedBox(
+                    width: maxWidth,
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          _buildPasswordField(),
-                          largeSpacing,
-                          _buildLoginButton(),
+                          _buildText(context),
+                          extraMediumSpacing,
+                          _buildEmailField(),
+                          mediumSpacing,
+                          Obx(
+                            () => Column(
+                              children: [
+                                _buildPasswordField(),
+                                largeSpacing,
+                                _buildLoginButton(),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                  ],
-                ),
+                  );
+                },
               ),
             ),
           ),

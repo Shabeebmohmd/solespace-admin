@@ -15,11 +15,7 @@ class SplashPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Add your logo here
-              SvgPicture.asset(
-                'assets/images/logo.svg',
-                width: 300,
-                height: 300,
-              ),
+              Image.asset('assets/images/icon.png', width: 300, height: 300),
               const SizedBox(height: 20),
               Text(
                 'Sole Space Admin',

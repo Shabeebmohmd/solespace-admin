@@ -7,7 +7,6 @@ import 'package:sole_space_admin/app/core/widgets/custom_app_bar.dart';
 import 'package:sole_space_admin/app/core/widgets/custom_card.dart';
 import 'package:sole_space_admin/app/routes/app_routes.dart';
 import 'package:sole_space_admin/app/theme/app_color.dart';
-import 'package:sole_space_admin/utils/utils.dart';
 
 class HomePage extends StatelessWidget {
   final authController = Get.find<AuthController>();
@@ -64,21 +63,6 @@ class HomePage extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.logout),
-            title: const Text('Logout'),
-            onTap:
-                () => Get.defaultDialog(
-                  title: 'Log out',
-                  middleText: 'Are you sure you want log out?',
-                  textConfirm: 'confirm',
-                  buttonColor: AppColors.primary,
-                  onConfirm: () => authController.logOut(),
-                  textCancel: 'Cancel',
-                ),
-            trailing: Icon(Icons.arrow_forward_ios_outlined),
-          ),
-          mediumSpacing,
-          ListTile(
             leading: Icon(Icons.dark_mode),
             title: Text('Dark Mode'),
             trailing: Obx(
@@ -95,11 +79,27 @@ class HomePage extends StatelessWidget {
             onTap: () => Get.toNamed(AppRoutes.privacyPolicy),
             trailing: const Icon(Icons.arrow_forward_ios_outlined),
           ),
+          const Divider(),
           ListTile(
             leading: const Icon(Icons.description_outlined),
             title: const Text('Terms & Conditions'),
             onTap: () => Get.toNamed(AppRoutes.termsAndConditions),
             trailing: const Icon(Icons.arrow_forward_ios_outlined),
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: const Text('Logout'),
+            onTap:
+                () => Get.defaultDialog(
+                  title: 'Log out',
+                  middleText: 'Are you sure you want log out?',
+                  textConfirm: 'confirm',
+                  buttonColor: AppColors.primary,
+                  onConfirm: () => authController.logOut(),
+                  textCancel: 'Cancel',
+                ),
+            trailing: Icon(Icons.arrow_forward_ios_outlined),
           ),
         ],
       ),

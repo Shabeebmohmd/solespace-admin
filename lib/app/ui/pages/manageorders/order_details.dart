@@ -3,39 +3,33 @@ import 'package:get/get.dart';
 import 'package:sole_space_admin/app/controllers/order_controller.dart';
 import 'package:sole_space_admin/app/core/widgets/custom_app_bar.dart';
 import 'package:sole_space_admin/app/data/models/order_model.dart';
-import 'package:sole_space_admin/app/routes/app_routes.dart';
 
-class ManageOrdersPage extends StatelessWidget {
-  const ManageOrdersPage({super.key});
+class OrderDetailspage extends StatelessWidget {
+  final Order order = Get.arguments;
+  final _orderController = Get.find<OrderController>();
+  OrderDetailspage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final orderController = Get.put(OrderController());
-
-    return Scaffold(
-      appBar: const CustomAppBar(title: Text('Manage Orders')),
-      body: Column(
-        children: [
-          _buildStatusFilter(orderController),
-          Expanded(
-            child: Obx(() {
-              if (orderController.isLoading.value) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              if (orderController.orders.isEmpty) {
-                return const Center(child: Text('No orders found'));
-              }
-              return ListView.builder(
+    return SafeArea(
+      child: Scaffold(
+        appBar: CustomAppBar(title: Text('Order Details')),
+        body: SingleChildScrollView(
+          child: Obx(() {
+            if (_orderController.isLoading.value) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (_orderController.orders.isEmpty) {
+              return const Center(child: Text('No order to show'));
+            }
+            return SingleChildScrollView(
+              child: Padding(
                 padding: const EdgeInsets.all(16),
-                itemCount: orderController.orders.length,
-                itemBuilder: (context, index) {
-                  final order = orderController.orders[index];
-                  return _buildOrderCard(context, order, orderController);
-                },
-              );
-            }),
-          ),
-        ],
+                child: _buildOrderCard(context, order, _orderController),
+              ),
+            );
+          }),
+        ),
       ),
     );
   }
@@ -50,7 +44,6 @@ class ManageOrdersPage extends StatelessWidget {
             children: [
               _buildFilterChip(controller, 'All', 'all'),
               _buildFilterChip(controller, 'Pending', 'pending'),
-              _buildFilterChip(controller, 'Processing', 'processing'),
               _buildFilterChip(controller, 'Shipped', 'shipped'),
               _buildFilterChip(controller, 'Delivered', 'delivered'),
               _buildFilterChip(controller, 'Cancelled', 'cancelled'),
@@ -83,45 +76,43 @@ class ManageOrdersPage extends StatelessWidget {
     Order order,
     OrderController controller,
   ) {
-    return InkWell(
-      onTap: () {
-        Get.toNamed(AppRoutes.orderDetails, arguments: order);
-      },
-      child: Card(
-        margin: const EdgeInsets.only(bottom: 16),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Order #${order.id.substring(0, 8)}',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Order #${order.id.substring(0, 8)}',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
-                  _buildStatusChip(order.status, controller),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Text('Customer: ${order.fullName ?? 'N/A'}'),
-              Text('Phone: ${order.phoneNumber ?? 'N/A'}'),
-              const SizedBox(height: 8),
-              Text(
-                'Total: \$${order.total.toStringAsFixed(2)}',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
                 ),
-              ),
-              const SizedBox(height: 16),
-              _buildActionButtons(context, order, controller),
-            ],
-          ),
+                _buildStatusChip(order.status, controller),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text('Customer: ${order.fullName ?? 'N/A'}'),
+            Text('Phone: ${order.phoneNumber ?? 'N/A'}'),
+            Text('Address: ${order.address ?? 'N/A'}'),
+            Text('City: ${order.city ?? 'N/A'}'),
+            Text('State: ${order.state ?? 'N/A'}'),
+            Text('Postal Code: ${order.postalCode ?? 'N/A'}'),
+            const SizedBox(height: 8),
+            Text(
+              'Total: \$${order.total.toStringAsFixed(2)}',
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            _buildOrderItems(order.items),
+            const SizedBox(height: 16),
+            _buildActionButtons(context, order, controller),
+          ],
         ),
       ),
     );
@@ -145,47 +136,6 @@ class ManageOrdersPage extends StatelessWidget {
     );
   }
 
-  // Widget _buildOrderItems(List<OrderItem> items) {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children:
-  //         items.map((item) {
-  //           return Padding(
-  //             padding: const EdgeInsets.only(bottom: 8),
-  //             child: Row(
-  //               children: [
-  //                 if (item.imageUrl != null)
-  //                   ClipRRect(
-  //                     borderRadius: BorderRadius.circular(8),
-  //                     child: Image.network(
-  //                       item.imageUrl!,
-  //                       width: 50,
-  //                       height: 50,
-  //                       fit: BoxFit.cover,
-  //                     ),
-  //                   ),
-  //                 const SizedBox(width: 8),
-  //                 Expanded(
-  //                   child: Column(
-  //                     crossAxisAlignment: CrossAxisAlignment.start,
-  //                     children: [
-  //                       Text(
-  //                         item.name,
-  //                         style: const TextStyle(fontWeight: FontWeight.bold),
-  //                       ),
-  //                       Text('Size: ${item.size}'),
-  //                       Text('Quantity: ${item.quantity}'),
-  //                     ],
-  //                   ),
-  //                 ),
-  //                 Text('\$${item.price.toStringAsFixed(2)}'),
-  //               ],
-  //             ),
-  //           );
-  //         }).toList(),
-  //   );
-  // }
-
   Widget _buildActionButtons(
     BuildContext context,
     Order order,
@@ -194,7 +144,7 @@ class ManageOrdersPage extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        if (order.status == 'pending' || order.status == 'processing')
+        if (order.status == 'pending')
           TextButton(
             onPressed:
                 () => _showStatusUpdateDialog(context, order, controller),
@@ -316,6 +266,47 @@ class ManageOrdersPage extends StatelessWidget {
               ),
             ],
           ),
+    );
+  }
+
+  Widget _buildOrderItems(List<OrderItem> items) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children:
+          items.map((item) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Row(
+                children: [
+                  if (item.imageUrl != null)
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(
+                        item.imageUrl!,
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item.name,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text('Size: ${item.size}'),
+                        Text('Quantity: ${item.quantity}'),
+                      ],
+                    ),
+                  ),
+                  Text('\$${item.price.toStringAsFixed(2)}'),
+                ],
+              ),
+            );
+          }).toList(),
     );
   }
 }

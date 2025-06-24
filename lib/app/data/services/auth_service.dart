@@ -13,7 +13,7 @@ class AuthService {
       );
       return result.user;
     } catch (e) {
-      Get.log('authentication error:$e');
+      Get.snackbar('Error', 'Invalid credential');
       return null;
     }
   }

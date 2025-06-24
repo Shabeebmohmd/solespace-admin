@@ -7,13 +7,16 @@ import 'package:sole_space_admin/app/routes/app_pages.dart';
 import 'package:sole_space_admin/app/routes/app_routes.dart';
 import 'package:sole_space_admin/app/theme/app_theme.dart';
 import 'package:sole_space_admin/bindings/initial_binding.dart';
+import 'package:sole_space_admin/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
 
   try {
-    await Firebase.initializeApp();
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
     Get.log('Firebase initialized successfully');
   } catch (e) {
     Get.log('Error initializing Firebase: $e');

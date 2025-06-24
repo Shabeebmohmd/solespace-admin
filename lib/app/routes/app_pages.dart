@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:sole_space_admin/app/routes/app_routes.dart';
 import 'package:sole_space_admin/app/ui/pages/managebrand/add_brands.dart';
 import 'package:sole_space_admin/app/ui/pages/managebrand/manage_brand.dart';
+import 'package:sole_space_admin/app/ui/pages/manageorders/order_details.dart';
 import 'package:sole_space_admin/app/ui/pages/manageproduct/add_products.dart';
 import 'package:sole_space_admin/app/ui/pages/dashboard/dash_board.dart';
 import 'package:sole_space_admin/app/ui/pages/managecategory/add_category.dart';
@@ -38,6 +39,7 @@ class AppPages {
     GetPage(name: AppRoutes.home, page: () => HomePage()),
     GetPage(name: AppRoutes.dashboard, page: () => const DashBoardPage()),
     GetPage(name: AppRoutes.manageOrders, page: () => const ManageOrdersPage()),
+    GetPage(name: AppRoutes.orderDetails, page: () => OrderDetailspage()),
 
     // Legal pages
     GetPage(
