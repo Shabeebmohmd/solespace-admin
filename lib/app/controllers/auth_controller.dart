@@ -18,7 +18,8 @@ class AuthController extends GetxController {
     FirebaseAuth.instance.authStateChanges().listen((user) async {
       await Future.delayed(const Duration(seconds: 2));
       if (user != null) {
-        if (user.email == 'shabeebmohmd47@gmail.com') {
+        if (user.email == 'admin123@gmail.com' ||
+            user.email == 'shabeebmohmd47@gmail.com') {
           Get.offAllNamed(AppRoutes.home);
           // Get.snackbar('Success', 'Welcome');
         } else {
@@ -36,7 +37,8 @@ class AuthController extends GetxController {
       isLoading.value = true;
       final user = await _authService.logIn(email, password);
       if (user != null) {
-        if (user.email == 'shabeebmohmd47@gmail.com') {
+        if (user.email == 'admin123@gmail.com' ||
+            user.email == 'shabeebmohmd47@gmail.com') {
           Get.snackbar('Success', 'Welcome');
           Get.offAllNamed(AppRoutes.home);
         } else {
@@ -58,4 +60,3 @@ class AuthController extends GetxController {
     isPasswordVisible.value = !isPasswordVisible.value;
   }
 }
-

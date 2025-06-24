@@ -22,61 +22,99 @@ class PrivacyPolicyPage extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              'Last updated: ${DateTime.now().toString().split(' ')[0]}',
+              'Last updated: June 24, 2025',
               style: Get.textTheme.bodyMedium?.copyWith(color: Colors.grey),
             ),
             const SizedBox(height: 24),
-            _buildSection(
-              'Information We Collect',
-              'We collect information that you provide directly to us, including but not limited to:\n\n'
-                  '• Personal information (name, email address, phone number)\n'
-                  '• Account credentials\n'
-                  '• Transaction information\n'
-                  '• Device and usage information',
+            Text(
+              'This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.\n\n'
+              'We use Your Personal data to provide and improve the Service. By using the Service, You agree to the collection and use of information in accordance with this Privacy Policy.',
+              style: Get.textTheme.bodyMedium,
             ),
-            _buildSection(
-              'How We Use Your Information',
-              'We use the information we collect to:\n\n'
-                  '• Provide and maintain our services\n'
-                  '• Process your transactions\n'
-                  '• Send you technical notices and support messages\n'
-                  '• Communicate with you about products, services, and events\n'
-                  '• Improve our services',
-            ),
-            _buildSection(
-              'Information Sharing',
-              'We do not sell or rent your personal information to third parties. We may share your information with:\n\n'
-                  '• Service providers who assist in our operations\n'
-                  '• Legal authorities when required by law\n'
-                  '• Business partners with your consent',
-            ),
-            _buildSection(
-              'Data Security',
-              'We implement appropriate security measures to protect your personal information. However, no method of transmission over the Internet is 100% secure.',
-            ),
-            _buildSection(
-              'Your Rights',
-              'You have the right to:\n\n'
-                  '• Access your personal information\n'
-                  '• Correct inaccurate information\n'
-                  '• Request deletion of your information\n'
-                  '• Opt-out of marketing communications',
-            ),
-            _buildSection(
-              'Contact Us',
-              'If you have any questions about this Privacy Policy, please contact us at:\n\n'
-                  'Email: support@solespace.com\n'
-                  'Phone: +1 (555) 123-4567',
-            ),
+            const SizedBox(height: 32),
+            _buildMainSection('Interpretation and Definitions', [
+              _buildSubSection(
+                'Interpretation',
+                'The words of which the initial letter is capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.',
+              ),
+              _buildSubSection(
+                'Definitions',
+                'For the purposes of this Privacy Policy:\n\n'
+                    '• Account means a unique account created for You to access our Service or parts of our Service.\n\n'
+                    '• Affiliate means an entity that controls, is controlled by or is under common control with a party, where "control" means ownership of 50% or more of the shares, equity interest or other securities entitled to vote for election of directors or other managing authority.\n\n'
+                    '• Application refers to SoleSpace Admin, the software program provided by the Company.\n\n'
+                    '• Company (referred to as either "the Company", "We", "Us" or "Our" in this Agreement) refers to SoleSpace Admin.\n\n'
+                    '• Country refers to: Kerala, India\n\n'
+                    '• Device means any device that can access the Service such as a computer, a cellphone or a digital tablet.\n\n'
+                    '• Personal Data is any information that relates to an identified or identifiable individual.\n\n'
+                    '• Service refers to the Application.\n\n'
+                    '• Service Provider means any natural or legal person who processes the data on behalf of the Company. It refers to third-party companies or individuals employed by the Company to facilitate the Service, to provide the Service on behalf of the Company, to perform services related to the Service or to assist the Company in analyzing how the Service is used.\n\n'
+                    '• Usage Data refers to data collected automatically, either generated by the use of the Service or from the Service infrastructure itself (for example, the duration of a page visit).\n\n'
+                    '• You means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.',
+              ),
+            ]),
+            _buildMainSection('Collecting and Using Your Personal Data', [
+              _buildSubSection(
+                'Types of Data Collected',
+                'Personal Data\n\n'
+                    'While using Our Service, We may ask You to provide Us with certain personally identifiable information that can be used to contact or identify You. Personally identifiable information may include, but is not limited to:\n\n'
+                    '• Usage Data\n\n'
+                    'Usage Data\n\n'
+                    'Usage Data is collected automatically when using the Service.\n\n'
+                    'Usage Data may include information such as Your Device\'s Internet Protocol address (e.g. IP address), browser type, browser version, the pages of our Service that You visit, the time and date of Your visit, the time spent on those pages, unique device identifiers and other diagnostic data.\n\n'
+                    'When You access the Service by or through a mobile device, We may collect certain information automatically, including, but not limited to, the type of mobile device You use, Your mobile device unique ID, the IP address of Your mobile device, Your mobile operating system, the type of mobile Internet browser You use, unique device identifiers and other diagnostic data.\n\n'
+                    'We may also collect information that Your browser sends whenever You visit our Service or when You access the Service by or through a mobile device.',
+              ),
+              _buildSubSection(
+                'Information Collected while Using the Application',
+                'While using Our Application, in order to provide features of Our Application, We may collect, with Your prior permission:\n\n'
+                    '• Pictures and other information from your Device\'s camera and photo library\n\n'
+                    'We use this information to provide features of Our Service, to improve and customize Our Service. The information may be uploaded to the Company\'s servers and/or a Service Provider\'s server or it may be simply stored on Your device.\n\n'
+                    'You can enable or disable access to this information at any time, through Your Device settings.',
+              ),
+            ]),
+            _buildMainSection('Use of Your Personal Data', [
+              _buildSubSection(
+                '',
+                'The Company may use Personal Data for the following purposes:\n\n'
+                    '• To provide and maintain our Service, including to monitor the usage of our Service.\n\n'
+                    '• To manage Your Account: to manage Your registration as a user of the Service.\n\n'
+                    '• For the performance of a contract: the development, compliance and undertaking of the purchase contract.\n\n'
+                    '• To contact You: By email, telephone calls, SMS, or other equivalent forms of electronic communication.\n\n'
+                    '• To provide You with news, special offers and general information about other goods, services and events.\n\n'
+                    '• To manage Your requests: To attend and manage Your requests to Us.\n\n'
+                    '• For business transfers: We may use Your information to evaluate or conduct a merger, divestiture, restructuring, reorganization, dissolution, or other sale or transfer of some or all of Our assets.\n\n'
+                    '• For other purposes: Such as data analysis, identifying usage trends, determining the effectiveness of our promotional campaigns.',
+              ),
+            ]),
+            _buildMainSection('Security of Your Personal Data', [
+              _buildSubSection(
+                '',
+                'The security of Your Personal Data is important to Us, but remember that no method of transmission over the Internet, or method of electronic storage is 100% secure. While We strive to use commercially acceptable means to protect Your Personal Data, We cannot guarantee its absolute security.',
+              ),
+            ]),
+            _buildMainSection('Children\'s Privacy', [
+              _buildSubSection(
+                '',
+                'Our Service does not address anyone under the age of 13. We do not knowingly collect personally identifiable information from anyone under the age of 13. If You are a parent or guardian and You are aware that Your child has provided Us with Personal Data, please contact Us.',
+              ),
+            ]),
+            _buildMainSection('Contact Us', [
+              _buildSubSection(
+                '',
+                'If you have any questions about this Privacy Policy, You can contact us:\n\n'
+                    '• By email: shabeebmohmd47@gmail.com',
+              ),
+            ]),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildSection(String title, String content) {
+  Widget _buildMainSection(String title, List<Widget> subsections) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 24.0),
+      padding: const EdgeInsets.only(bottom: 32.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -86,7 +124,28 @@ class PrivacyPolicyPage extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 16),
+          ...subsections,
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSubSection(String title, String content) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (title.isNotEmpty) ...[
+            Text(
+              title,
+              style: Get.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 8),
+          ],
           Text(content, style: Get.textTheme.bodyMedium),
         ],
       ),

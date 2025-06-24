@@ -34,43 +34,6 @@ class OrderDetailspage extends StatelessWidget {
     );
   }
 
-  Widget _buildStatusFilter(OrderController controller) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: Obx(
-        () => SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              _buildFilterChip(controller, 'All', 'all'),
-              _buildFilterChip(controller, 'Pending', 'pending'),
-              _buildFilterChip(controller, 'Shipped', 'shipped'),
-              _buildFilterChip(controller, 'Delivered', 'delivered'),
-              _buildFilterChip(controller, 'Cancelled', 'cancelled'),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFilterChip(
-    OrderController controller,
-    String label,
-    String value,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 8),
-      child: FilterChip(
-        label: Text(label),
-        selected: controller.selectedStatus.value == value,
-        onSelected: (selected) {
-          controller.filterByStatus(value);
-        },
-      ),
-    );
-  }
-
   Widget _buildOrderCard(
     BuildContext context,
     Order order,
